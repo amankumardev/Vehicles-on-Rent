@@ -14,7 +14,12 @@ router.get('/', async (req, res) => {
         // Build query
         let query = {};
 
-        if (type) query.type = type;
+        if (type) {
+            // allow 'scooty' alias and always query using normalized 'scooter'
+            let normalized = type.toLowerCase();
+            if (normalized === 'scooty') normalized = 'scooter';
+            query.type = normalized;
+        }
         if (transmission) query['specifications.transmission'] = transmission;
         if (fuelType) query['specifications.fuelType'] = fuelType;
         if (seats) query['specifications.seats'] = parseInt(seats);

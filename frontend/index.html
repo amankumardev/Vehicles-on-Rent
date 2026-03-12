@@ -31,6 +31,7 @@
       
       <ul class="navbar-menu" id="navbarMenu">
         <li><a href="vehicles.html" class="navbar-link">Rent a Bike</a></li>
+        <li><a href="vehicles.html?type=scooty" class="navbar-link">Rent a Scooty</a></li>
         <li><a href="vehicles.html" class="navbar-link">Rent a Car</a></li>
         <li><a href="#" class="navbar-link">Our Fleet</a></li>
         <li><a href="#" class="navbar-link">About Us</a></li>
@@ -59,6 +60,13 @@
           <h3>SUVs & Sedans Available Now</h3>
           <p>Drive your dream car today with AK Enterprises.</p>
           <a href="vehicles.html" class="btn btn-outline btn-sm">View Cars</a>
+        </div>
+        <!-- New Scooty Promo -->
+        <div class="promo-card promo-dark" style="background:linear-gradient(135deg,#ffb347 0%,#ffcc33 100%); color:#1a1a1a;">
+          <div class="promo-badge">Scooty Rentals ★★★★☆</div>
+          <h3>Easy & Affordable Scooty Rides</h3>
+          <p>Perfect for quick city commutes at just ₹300/day.</p>
+          <a href="vehicles.html?type=scooty" class="btn btn-primary btn-sm">View Scooties</a>
         </div>
       </div>
     </div>
@@ -148,6 +156,15 @@
           </div>
           <div class="category-info">
             <h3>Rent SUVs</h3>
+            <span class="category-arrow">↗</span>
+          </div>
+        </a>
+        <a href="vehicles.html?type=scooty" class="category-card animate-slideUp" style="animation-delay: 0.3s">
+          <div class="category-img-wrapper">
+            <img src="public/images/scooty/tvs-scooty-pep-plus-standard-167.avif" alt="Rent Scooty">
+          </div>
+          <div class="category-info">
+            <h3>Rent Scooty</h3>
             <span class="category-arrow">↗</span>
           </div>
         </a>
@@ -427,7 +444,7 @@
 
     .promo-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: var(--spacing-md);
       padding: var(--spacing-md) 0;
     }

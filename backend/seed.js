@@ -207,6 +207,31 @@ const sampleVehicles = [
         totalReviews: 91
     },
     {
+        name: 'TVS Scooty Pep Plus',
+        type: 'scooter',
+        brand: 'TVS',
+        model: 'Scooty Pep Plus',
+        year: 2023,
+        description: 'Lightweight and fuel-efficient scooty ideal for city commuting. Easy to ride and park.',
+        pricePerDay: 15,
+        features: ['Underseat Storage', 'Electric Start', 'Tubeless Tyres'],
+        images: ['/images/scooty/tvs-scooty-pep-plus-standard-167.avif'],
+        specifications: {
+            seats: 2,
+            transmission: 'automatic',
+            fuelType: 'petrol',
+            mileage: '60 MPG',
+            engineCapacity: '109cc'
+        },
+        location: {
+            city: 'Bangalore',
+            address: '101 City Plaza'
+        },
+        availability: true,
+        rating: 4.2,
+        totalReviews: 38
+    },
+    {
         name: 'Mercedes-Benz Sprinter Van',
         type: 'van',
         brand: 'Mercedes-Benz',

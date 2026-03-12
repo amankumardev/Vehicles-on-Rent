@@ -42,6 +42,7 @@
               <option value="luxury">Luxury</option>
               <option value="bike">Bike</option>
               <option value="van">Van</option>
+              <option value="scooter">Scooty</option>
             </select>
           </div>
 
@@ -154,7 +155,7 @@
                 <div class="vehicle-card-header">
                   <div>
                     <div class="vehicle-card-name">${vehicle.name}</div>
-                    <div class="vehicle-card-type">${vehicle.type}</div>
+                    <div class="vehicle-card-type">${vehicle.type === 'scooter' ? 'Scooty' : vehicle.type}</div>
                   </div>
                   <div class="vehicle-card-price">$${vehicle.pricePerDay}<span style="font-size: 0.875rem; font-weight: 500;">/day</span></div>
                 </div>
@@ -205,8 +206,11 @@
     // Load URL params
     const urlParams = getUrlParams();
     if (urlParams.type) {
-      document.getElementById('filterType').value = urlParams.type;
-      loadVehicles({ type: urlParams.type });
+      // normalize scooty alias
+      let typeParam = urlParams.type.toLowerCase();
+      if (typeParam === 'scooty') typeParam = 'scooter';
+      document.getElementById('filterType').value = typeParam;
+      loadVehicles({ type: typeParam });
     } else {
       loadVehicles();
     }
