@@ -3,825 +3,744 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - RentRide</title>
-  
+  <meta name="description" content="Login to AK Enterprises and manage your bookings, rides, and profile.">
+  <title>Login - AK ENTERPRISES</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/components.css">
-  
+
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      position: relative;
-      padding: var(--spacing-md);
+      background:
+        radial-gradient(circle at top left, rgba(212, 167, 48, 0.18), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(26, 125, 55, 0.24), transparent 32%),
+        linear-gradient(135deg, #0f172a 0%, #16213e 48%, #1a1a2e 100%);
+      color: var(--text-light);
+      overflow-x: hidden;
     }
 
-    .container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 80px;
+    .login-shell {
+      position: relative;
+      min-height: 100vh;
+      padding: 7rem 0 3rem;
+    }
+
+    .login-shell::before,
+    .login-shell::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(12px);
+      opacity: 0.65;
+    }
+
+    .login-shell::before {
+      width: 280px;
+      height: 280px;
+      top: 120px;
+      left: -100px;
+      background: radial-gradient(circle, rgba(212, 167, 48, 0.28), transparent 70%);
+    }
+
+    .login-shell::after {
+      width: 360px;
+      height: 360px;
+      right: -140px;
+      bottom: 30px;
+      background: radial-gradient(circle, rgba(26, 125, 55, 0.22), transparent 70%);
+    }
+
+    .login-layout {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: clamp(1.5rem, 3vw, 3rem);
+      align-items: stretch;
       position: relative;
       z-index: 1;
     }
 
-    /* Desk Lamp Styles */
-    .lamp-container {
+    .login-showcase {
       position: relative;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      user-select: none;
-    }
-
-    .lamp-container:hover {
-      transform: scale(1.05);
-    }
-
-    .lamp-base {
-      width: 120px;
-      height: 15px;
-      background: linear-gradient(to bottom, #2d2d2d, #1a1a1a);
-      border-radius: 8px;
-      position: relative;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    }
-
-    .lamp-arm {
-      width: 8px;
-      height: 80px;
-      background: linear-gradient(to right, #3a3a3a, #2a2a2a);
-      position: absolute;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 4px;
-    }
-
-    .lamp-head {
-      width: 100px;
-      height: 80px;
-      background: linear-gradient(to bottom, #4a4a4a, #2a2a2a);
-      border-radius: 50% 50% 45% 45%;
-      position: absolute;
-      bottom: 95px;
-      left: 50%;
-      transform: translateX(-50%);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      padding: clamp(2rem, 4vw, 4rem);
+      border-radius: var(--radius-2xl);
+      background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)),
+        linear-gradient(135deg, rgba(22, 33, 62, 0.96), rgba(26, 26, 46, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow-xl);
       overflow: hidden;
-      transition: all 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 680px;
     }
 
-    .lamp-glow {
+    .login-showcase::before {
+      content: '';
       position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      height: 60%;
-      background: radial-gradient(ellipse at center, 
-        rgba(255, 255, 100, 0) 0%,
-        rgba(255, 255, 100, 0) 100%);
+      inset: auto -10% -30% auto;
+      width: 360px;
+      height: 360px;
       border-radius: 50%;
-      opacity: 0;
-      transition: all 0.5s ease;
+      background: radial-gradient(circle, rgba(26, 125, 55, 0.24), transparent 70%);
     }
 
-    .lamp-on .lamp-glow {
-      opacity: 1;
-      background: radial-gradient(ellipse at center, 
-        rgba(255, 255, 100, 0.8) 0%,
-        rgba(144, 238, 144, 0.4) 40%,
-        rgba(144, 238, 144, 0) 70%);
-      filter: blur(3px);
+    .showcase-top,
+    .showcase-bottom {
+      position: relative;
+      z-index: 1;
     }
 
-    .light-beam {
-      position: absolute;
-      bottom: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 150px solid transparent;
-      border-right: 150px solid transparent;
-      border-top: 200px solid rgba(255, 255, 100, 0);
-      opacity: 0;
-      transition: all 0.6s ease;
-      filter: blur(20px);
+    .showcase-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      color: white;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      font-size: 1rem;
+      margin-bottom: 2rem;
     }
 
-    .lamp-on .light-beam {
-      opacity: 0.4;
-      border-top-color: rgba(255, 255, 100, 0.3);
-    }
-
-    .lamp-face {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 70px;
-      height: 50px;
-    }
-
-    .eye {
-      position: absolute;
-      width: 12px;
-      height: 3px;
-      background: #1a1a1a;
+    .showcase-brand img {
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
-      top: 15px;
-      transition: all 0.5s ease;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
     }
 
-    .eye.left {
-      left: 15px;
+    .showcase-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
     }
 
-    .eye.right {
-      right: 15px;
+    .showcase-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4vw, 4.5rem);
+      line-height: 1.04;
+      color: white;
+      margin-bottom: 1rem;
+      max-width: 9ch;
     }
 
-    .lamp-on .eye {
-      height: 12px;
-      background: #000;
-      border: 2px solid #39ff14;
-      box-shadow: 0 0 8px rgba(57, 255, 20, 0.8);
+    .showcase-title strong {
+      color: var(--secondary-light);
+      font-weight: 700;
     }
 
-    .mouth {
+    .showcase-copy {
+      max-width: 560px;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 1.02rem;
+      margin-bottom: 2rem;
+    }
+
+    .showcase-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .highlight-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1.2rem;
+      padding: 1.1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .highlight-value {
+      display: block;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .highlight-label {
+      display: block;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .showcase-panel {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .vehicle-spotlight,
+    .trust-note {
+      border-radius: 1.35rem;
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      min-height: 210px;
+    }
+
+    .vehicle-spotlight {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+        #f8fafc;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .vehicle-spotlight img {
       position: absolute;
-      width: 25px;
-      height: 12px;
-      border: 2px solid transparent;
-      border-bottom-color: transparent;
-      border-radius: 0 0 25px 25px;
-      top: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      transition: all 0.5s ease;
+      right: 0;
+      bottom: 6px;
+      width: 78%;
+      max-width: 320px;
+      filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.22));
     }
 
-    .lamp-on .mouth {
-      border-color: #39ff14;
-      border-top-color: transparent;
-      width: 30px;
-      height: 15px;
-      box-shadow: 0 0 6px rgba(57, 255, 20, 0.6);
+    .vehicle-spotlight .tag {
+      display: inline-flex;
+      width: fit-content;
+      padding: 0.35rem 0.8rem;
+      border-radius: var(--radius-full);
+      background: rgba(26, 125, 55, 0.12);
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.65rem;
     }
 
-    .pull-cord {
-      position: absolute;
-      width: 2px;
-      height: 40px;
-      background: linear-gradient(to bottom, #555, #333);
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    .vehicle-spotlight h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+      color: var(--text-primary);
+      max-width: 180px;
     }
 
-    .cord-handle {
-      position: absolute;
-      bottom: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 12px;
-      height: 12px;
-      background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
-      border-radius: 50%;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-      transition: transform 0.2s ease;
+    .vehicle-spotlight p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      max-width: 180px;
     }
 
-    .lamp-container:active .cord-handle {
-      transform: translateX(-50%) translateY(5px);
+    .trust-note {
+      background: linear-gradient(180deg, rgba(212, 167, 48, 0.18), rgba(212, 167, 48, 0.08));
+      border: 1px solid rgba(212, 167, 48, 0.28);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    /* Login Card Styles */
+    .trust-note span {
+      width: 48px;
+      height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.18);
+      font-size: 1.35rem;
+    }
+
+    .trust-note h3 {
+      color: white;
+      margin-bottom: 0.45rem;
+      font-size: 1.1rem;
+    }
+
+    .trust-note p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.9rem;
+    }
+
     .login-card {
-      background: rgba(20, 20, 35, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      padding: 45px 40px;
-      width: 420px;
-      max-width: 90vw;
-      border: 2px solid transparent;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
-      transform: translateX(100px);
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      background: rgba(255, 255, 255, 0.94);
+      color: var(--text-primary);
+      border-radius: var(--radius-2xl);
+      box-shadow: 0 30px 80px rgba(5, 15, 35, 0.34);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      overflow: hidden;
+      position: relative;
+      min-height: 680px;
+    }
+
+    .login-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary-light));
+    }
+
+    .login-card-inner {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(2rem, 4vw, 3.2rem);
+    }
+
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      width: fit-content;
+    }
+
+    .back-home:hover {
+      color: var(--primary);
+    }
+
+    .login-header h1 {
+      margin-bottom: 0.65rem;
+      font-size: clamp(2rem, 3vw, 2.8rem);
+    }
+
+    .login-header p {
+      color: var(--text-muted);
+      margin-bottom: 1.6rem;
+      max-width: 420px;
+    }
+
+    .login-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .login-point {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.65rem 0.9rem;
+      border-radius: var(--radius-full);
+      background: rgba(26, 125, 55, 0.08);
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .login-point strong {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .input-wrap {
       position: relative;
     }
 
-    .login-card.active {
-      transform: translateX(0);
-      opacity: 1;
-      pointer-events: all;
-      border-color: #39ff14;
-      box-shadow: 
-        0 0 30px rgba(57, 255, 20, 0.3),
-        0 0 60px rgba(57, 255, 20, 0.2),
-        0 25px 60px rgba(0, 0, 0, 0.5);
-      animation: glowPulse 3s ease-in-out infinite;
+    .form-label {
+      margin-bottom: 0.55rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
     }
 
-    @keyframes glowPulse {
-      0%, 100% {
-        box-shadow: 
-          0 0 20px rgba(57, 255, 20, 0.3),
-          0 0 40px rgba(57, 255, 20, 0.2),
-          0 25px 60px rgba(0, 0, 0, 0.5);
-      }
-      50% {
-        box-shadow: 
-          0 0 40px rgba(57, 255, 20, 0.5),
-          0 0 80px rgba(57, 255, 20, 0.3),
-          0 25px 60px rgba(0, 0, 0, 0.5);
-      }
+    .form-input {
+      border: 1px solid rgba(26, 26, 46, 0.12);
+      border-radius: 1rem;
+      padding: 1rem 1rem 1rem 3rem;
+      background: rgba(247, 247, 247, 0.88);
     }
 
-    .login-brand {
-      display: block;
-      font-size: 1.75rem;
-      text-align: center;
-      margin-bottom: var(--spacing-md);
-      text-decoration: none;
-      color: #fff;
+    .form-input:focus {
+      background: white;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      color: var(--primary);
+      pointer-events: none;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0.3rem;
+    }
+
+    .password-toggle:hover {
+      color: var(--primary);
+    }
+
+    .form-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 0.25rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .remember-me {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+
+    .remember-me input {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+    }
+
+    .forgot-link {
+      color: var(--primary);
+      font-size: 0.92rem;
       font-weight: 700;
     }
 
-    .login-card h2 {
-      color: #fff;
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .login-card .subtitle {
-      color: #a0a0a0;
-      font-size: 14px;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .form-group {
-      margin-bottom: 22px;
-    }
-
-    .form-group label {
-      display: block;
-      color: #d0d0d0;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      letter-spacing: 0.3px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 14px 16px;
-      background: rgba(40, 40, 60, 0.6);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      color: #fff;
-      font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      transition: all 0.3s ease;
-      outline: none;
-    }
-
-    .form-group input:focus {
-      border-color: #39ff14;
-      background: rgba(40, 40, 60, 0.8);
-      box-shadow: 0 0 0 4px rgba(57, 255, 20, 0.1);
-    }
-
-    .form-group input::placeholder {
-      color: #666;
-    }
-
-    .form-error {
-      color: #ff4444;
-      font-size: 12px;
-      margin-top: 5px;
-      display: block;
-    }
-
-    .forgot-password {
-      text-align: right;
-      margin-bottom: 25px;
-    }
-
-    .forgot-password a {
-      color: #39ff14;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-
-    .forgot-password a:hover {
-      color: #2ede00;
-      text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+    .forgot-link:hover {
+      color: var(--primary-dark);
     }
 
     .login-btn {
       width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #39ff14, #2ede00);
-      border: none;
-      border-radius: 10px;
-      color: #000;
-      font-size: 15px;
+      min-height: 56px;
+      font-size: 1rem;
       font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      box-shadow: 0 8px 20px rgba(57, 255, 20, 0.3);
-      position: relative;
-      overflow: hidden;
+      border-radius: 1rem;
     }
 
-    .login-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .login-btn:hover::before {
-      width: 400px;
-      height: 400px;
-    }
-
-    .login-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(57, 255, 20, 0.5);
-    }
-
-    .login-btn:active {
-      transform: translateY(0);
-    }
-
-    .login-btn span {
-      position: relative;
-      z-index: 1;
-    }
-
-    .login-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .secure-note {
+      margin-top: 1rem;
+      padding: 0.95rem 1rem;
+      border-radius: 1rem;
+      background: linear-gradient(135deg, rgba(26, 125, 55, 0.06), rgba(212, 167, 48, 0.08));
+      border: 1px solid rgba(26, 125, 55, 0.1);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
     }
 
     .auth-footer {
+      margin-top: 1.7rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(26, 26, 46, 0.08);
       text-align: center;
-      margin-top: 25px;
-      padding-top: 25px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .auth-footer p {
       margin: 0;
-      color: #a0a0a0;
-      font-size: 14px;
+      color: var(--text-muted);
     }
 
     .auth-footer a {
-      color: #39ff14;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      color: var(--primary);
+      font-weight: 700;
     }
 
-    .auth-footer a:hover {
-      color: #2ede00;
-      text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
-    }
-
-    /* Background Decorations */
-    .bg-decoration {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.15;
-      pointer-events: none;
-    }
-
-    .bg-decoration.green {
-      width: 400px;
-      height: 400px;
-      background: #39ff14;
-      top: -100px;
-      right: -100px;
-      animation: float 8s ease-in-out infinite;
-    }
-
-    .bg-decoration.purple {
-      width: 350px;
-      height: 350px;
-      background: #8b5cf6;
-      bottom: -100px;
-      left: -100px;
-      animation: float 10s ease-in-out infinite reverse;
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translate(0, 0);
+    @media (max-width: 1080px) {
+      .login-layout {
+        grid-template-columns: 1fr;
       }
-      50% {
-        transform: translate(30px, -30px);
-      }
-    }
 
-    /* Responsive Design */
-   
-    /* Tablet and Small Laptops */
-    @media (max-width: 1024px) {
-      .container {
-        gap: 60px;
-      }
-      
+      .login-showcase,
       .login-card {
-        width: 400px;
-        padding: 40px 35px;
-      }
-      
-      .lamp-container {
-        transform: scale(0.9);
-      }
-      
-      .bg-decoration.green,
-      .bg-decoration.purple {
-        opacity: 0.1;
-      }
-    }
-    
-    /* Mobile Landscape and Tablet Portrait */
-    @media (max-width: 968px) {
-      body {
-        padding: var(--spacing-sm);
-      }
-      
-      .container {
-        flex-direction: column;
-        gap: 40px;
-        padding: var(--spacing-md) 0;
+        min-height: auto;
       }
 
-      .lamp-container {
-        transform: scale(0.75);
-        margin-top: 20px;
-      }
-
-      .login-card {
-        width: 90%;
-        max-width: 420px;
-        padding: 35px 30px;
-      }
-
-      .login-card.active {
-        transform: translateY(0);
-      }
-
-      .login-card {
-        transform: translateY(50px);
-      }
-      
-      .login-brand {
-        font-size: 1.5rem;
-      }
-      
-      .login-card h2 {
-        font-size: 24px;
-      }
-      
-      .login-card .subtitle {
-        font-size: 13px;
-      }
-      
-      .bg-decoration.green,
-      .bg-decoration.purple {
-        opacity: 0.08;
-        filter: blur(60px);
-      }
-    }
-    
-    /* Mobile Portrait */
-    @media (max-width: 480px) {
-      body {
-        padding: 0.5rem;
-      }
-      
-      .container {
-        gap: 30px;
-        padding: 1rem 0;
-      }
-      
-      .lamp-container {
-        transform: scale(0.6);
-        margin-top: 0;
-      }
-      
-      .lamp-container:hover {
-        transform: scale(0.63);
-      }
-      
-      .login-card {
-        width: 100%;
+      .showcase-title {
         max-width: 100%;
-        padding: 28px 24px;
-        border-radius: 20px;
-      }
-      
-      .login-brand {
-        font-size: 1.35rem;
-        margin-bottom: 1rem;
-      }
-      
-      .login-card h2 {
-        font-size: 22px;
-        margin-bottom: 6px;
-      }
-      
-      .login-card .subtitle {
-        font-size: 12px;
-        margin-bottom: 24px;
-      }
-      
-      .form-group {
-        margin-bottom: 18px;
-      }
-      
-      .form-group label {
-        font-size: 12px;
-        margin-bottom: 6px;
-      }
-      
-      .form-group input {
-        padding: 12px 14px;
-        font-size: 14px;
-        border-radius: 8px;
-      }
-      
-      .forgot-password {
-        margin-bottom: 20px;
-      }
-      
-      .forgot-password a {
-        font-size: 12px;
-      }
-      
-      .login-btn {
-        padding: 12px;
-        font-size: 14px;
-        border-radius: 8px;
-        letter-spacing: 0.6px;
-      }
-      
-      .auth-footer {
-        margin-top: 20px;
-        padding-top: 20px;
-      }
-      
-      .auth-footer p {
-        font-size: 13px;
-      }
-      
-      .bg-decoration.green {
-        width: 250px;
-        height: 250px;
-        top: -50px;
-        right: -50px;
-      }
-      
-      .bg-decoration.purple {
-        width: 200px;
-        height: 200px;
-        bottom: -50px;
-        left: -50px;
       }
     }
-    
-    /* Small Mobile Phones */
-    @media (max-width: 375px) {
-      .container {
-        gap: 20px;
+
+    @media (max-width: 768px) {
+      .login-shell {
+        padding-top: 5.5rem;
       }
-      
-      .lamp-container {
-        transform: scale(0.5);
+
+      .login-showcase,
+      .login-card-inner {
+        padding: 1.5rem;
       }
-      
-      .lamp-container:hover {
-        transform: scale(0.52);
+
+      .showcase-highlights,
+      .showcase-panel {
+        grid-template-columns: 1fr;
       }
-      
-      .login-card {
-        padding: 24px 20px;
-        border-radius: 16px;
+
+      .vehicle-spotlight,
+      .trust-note {
+        min-height: 180px;
       }
-      
-      .login-brand {
-        font-size: 1.2rem;
+
+      .vehicle-spotlight img {
+        width: 62%;
       }
-      
-      .login-card h2 {
-        font-size: 20px;
-      }
-      
-      .login-card .subtitle {
-        font-size: 11px;
-      }
-      
-      .form-group {
-        margin-bottom: 16px;
-      }
-      
-      .form-group input {
-        padding: 11px 12px;
-        font-size: 13px;
-      }
-      
-      .login-btn {
-        padding: 11px;
-        font-size: 13px;
-      }
-      
-      .bg-decoration {
-        display: none;
+
+      .form-meta {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
-    
-    /* Landscape orientation on small devices */
-    @media (max-height: 600px) and (orientation: landscape) {
-      .container {
-        flex-direction: row;
-        gap: 30px;
-        padding: 1rem;
+
+    @media (max-width: 480px) {
+      .login-shell {
+        padding: 5rem 0 1.5rem;
       }
-      
-      .lamp-container {
-        transform: scale(0.5);
+
+      .login-showcase {
+        padding: 1.25rem;
       }
-      
-      .login-card {
-        max-width: 350px;
-        padding: 20px;
+
+      .showcase-title {
+        font-size: 2.15rem;
       }
-      
-      .login-card h2 {
-        font-size: 20px;
+
+      .login-header h1 {
+        font-size: 1.8rem;
       }
-      
-      .form-group {
-        margin-bottom: 12px;
-      }
-      
-      .form-group input {
-        padding: 10px 12px;
+
+      .form-input {
+        padding-left: 2.75rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Background Decorations -->
-  <div class="bg-decoration green"></div>
-  <div class="bg-decoration purple"></div>
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <img src="public/images/ak-logo.png" alt="AK Enterprises Logo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+        AK ENTERPRISES
+      </a>
 
-  <div class="container">
-    <!-- Desk Lamp -->
-    <div class="lamp-container" id="lamp" tabindex="0" role="button" aria-label="Toggle lamp and login form">
-      <div class="light-beam"></div>
-      <div class="lamp-head">
-        <div class="lamp-glow"></div>
-        <div class="lamp-face">
-          <div class="eye left"></div>
-          <div class="eye right"></div>
-          <div class="mouth"></div>
-        </div>
+      <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
+        &#9776;
+      </button>
+
+      <ul class="navbar-menu" id="navbarMenu">
+        <li><a href="index.html" class="navbar-link">Home</a></li>
+        <li><a href="vehicles.html" class="navbar-link">Rent a Bike</a></li>
+        <li><a href="vehicles.html?type=scooty" class="navbar-link">Rent a Scooty</a></li>
+        <li><a href="vehicles.html?type=car" class="navbar-link">Rent a Car</a></li>
+      </ul>
+
+      <div class="navbar-icons">
+        <a href="register.html" class="btn btn-outline btn-sm">Create Account</a>
       </div>
-      <div class="lamp-arm">
-        <div class="pull-cord">
-          <div class="cord-handle"></div>
-        </div>
-      </div>
-      <div class="lamp-base"></div>
     </div>
+  </nav>
 
-    <!-- Login Card -->
-    <div class="login-card" id="loginCard">
-      <a href="index.html" class="login-brand">🚗 RentRide</a>
-      <h2>Welcome Back</h2>
-      <p class="subtitle">Login to access your account and bookings</p>
-      
-      <form id="loginForm">
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input 
-            type="email" 
-            id="email" 
-            placeholder="your.email@example.com"
-            required
-          >
-          <span class="form-error" id="emailError"></span>
+  <main class="login-shell">
+    <div class="container">
+      <section class="login-layout">
+        <div class="login-showcase animate-slideInLeft">
+          <div class="showcase-top">
+            <a href="index.html" class="showcase-brand">
+              <img src="public/images/ak-logo.png" alt="AK Enterprises">
+              <span>AK ENTERPRISES</span>
+            </a>
+
+            <div class="showcase-eyebrow">Premium Vehicle Rentals</div>
+            <h2 class="showcase-title">Drive in with style, log in with <strong>confidence</strong>.</h2>
+            <p class="showcase-copy">
+              Apni bookings, favorite rides aur account details ko ek premium dashboard se manage kijiye. Same website colors, same AK Enterprises identity.
+            </p>
+
+            <div class="showcase-highlights">
+              <div class="highlight-card">
+                <span class="highlight-value">500+</span>
+                <span class="highlight-label">Bikes, cars aur scooties ready for rent</span>
+              </div>
+              <div class="highlight-card">
+                <span class="highlight-value">24/7</span>
+                <span class="highlight-label">Fast support and booking assistance</span>
+              </div>
+              <div class="highlight-card">
+                <span class="highlight-value">10K+</span>
+                <span class="highlight-label">Happy riders across cities</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="showcase-bottom">
+            <div class="showcase-panel">
+              <article class="vehicle-spotlight">
+                <span class="tag">Featured Ride</span>
+                <h3>Luxury SUV Experience</h3>
+                <p>Comfort, class and clean pricing for every journey.</p>
+                <img src="public/images/cars/black-luxury-suv.png" alt="Luxury SUV">
+              </article>
+
+              <article class="trust-note">
+                <span>✓</span>
+                <div>
+                  <h3>Secure access</h3>
+                  <p>Login karke bookings track karein, payment updates dekhein aur apna profile safely manage karein.</p>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input 
-            type="password" 
-            id="password" 
-            placeholder="Enter your password"
-            required
-          >
-          <span class="form-error" id="passwordError"></span>
-        </div>
+        <div class="login-card animate-slideInRight">
+          <div class="login-card-inner">
+            <a href="index.html" class="back-home">&#8592; Back to home</a>
 
-        <div class="forgot-password">
-          <a href="#" onclick="event.preventDefault(); alert('Password recovery feature coming soon!')">
-            Forgot Password?
-          </a>
-        </div>
+            <div class="login-header">
+              <h1>Welcome back</h1>
+              <p>Apne AK Enterprises account me sign in kijiye aur apni bookings, wishlist aur ride history access kijiye.</p>
+            </div>
 
-        <button type="submit" class="login-btn">
-          <span>Login</span>
-        </button>
+            <div class="login-points">
+              <span class="login-point"><strong>Fast</strong> booking access</span>
+              <span class="login-point"><strong>Easy</strong> dashboard control</span>
+              <span class="login-point"><strong>Secure</strong> account login</span>
+            </div>
 
-        <div class="auth-footer">
-          <p>Don't have an account? <a href="register.html">Sign up</a></p>
+            <form id="loginForm" class="auth-form">
+              <div class="form-group">
+                <label class="form-label" for="email">Email Address</label>
+                <div class="input-wrap">
+                  <span class="input-icon">@</span>
+                  <input
+                    type="email"
+                    id="email"
+                    class="form-input"
+                    placeholder="your.email@example.com"
+                    required
+                  >
+                </div>
+                <span class="form-error" id="emailError"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="input-wrap">
+                  <span class="input-icon">&#128274;</span>
+                  <input
+                    type="password"
+                    id="password"
+                    class="form-input"
+                    placeholder="Enter your password"
+                    required
+                  >
+                  <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">SHOW</button>
+                </div>
+                <span class="form-error" id="passwordError"></span>
+              </div>
+
+              <div class="form-meta">
+                <label class="remember-me" for="rememberMe">
+                  <input type="checkbox" id="rememberMe">
+                  <span>Remember me</span>
+                </label>
+
+                <a href="#" class="forgot-link" id="forgotPasswordLink">Forgot password?</a>
+              </div>
+
+              <button type="submit" class="btn btn-primary login-btn">
+                Sign In
+              </button>
+
+              <div class="secure-note">
+                Your login stays connected to the same AK Enterprises brand style as the rest of the website, with clean green, gold and navy accents.
+              </div>
+            </form>
+
+            <div class="auth-footer">
+              <p>Don't have an account? <a href="register.html">Create one here</a></p>
+            </div>
+          </div>
         </div>
-      </form>
+      </section>
     </div>
-  </div>
+  </main>
 
   <script src="js/utils.js"></script>
   <script src="js/api.js"></script>
   <script>
-    // Check if already logged in
     if (getToken()) {
       window.location.href = 'dashboard.html';
     }
 
-    const lamp = document.getElementById('lamp');
-    const loginCard = document.getElementById('loginCard');
-    const loginForm = document.getElementById('loginForm');
-    let isOn = false;
-
-    // Toggle lamp and login card
-    function toggleLamp() {
-      isOn = !isOn;
-      
-      if (isOn) {
-        lamp.classList.add('lamp-on');
-        loginCard.classList.add('active');
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 20) {
+        navbar.classList.add('scrolled');
       } else {
-        lamp.classList.remove('lamp-on');
-        loginCard.classList.remove('active');
-      }
-    }
-
-    lamp.addEventListener('click', toggleLamp);
-
-    // Keyboard accessibility
-    lamp.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleLamp();
+        navbar.classList.remove('scrolled');
       }
     });
 
-    // Handle login form submission
-    loginForm.addEventListener('submit', async (e) => {
+    document.getElementById('navbarToggle')?.addEventListener('click', () => {
+      document.getElementById('navbarMenu')?.classList.toggle('active');
+    });
+
+    document.getElementById('forgotPasswordLink')?.addEventListener('click', (event) => {
+      event.preventDefault();
+      showToast('Password recovery feature coming soon.', 'warning');
+    });
+
+    document.getElementById('passwordToggle')?.addEventListener('click', () => {
+      const passwordInput = document.getElementById('password');
+      const toggleButton = document.getElementById('passwordToggle');
+      const isPassword = passwordInput.type === 'password';
+
+      passwordInput.type = isPassword ? 'text' : 'password';
+      toggleButton.textContent = isPassword ? 'HIDE' : 'SHOW';
+      toggleButton.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Clear previous errors
       document.getElementById('emailError').textContent = '';
       document.getElementById('passwordError').textContent = '';
 
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
 
-      // Validation
       let hasError = false;
 
       if (!validateEmail(email)) {
@@ -836,24 +755,20 @@
 
       if (hasError) return;
 
-      // Submit login
       const submitBtn = e.target.querySelector('button[type="submit"]');
       setLoading(submitBtn, true);
 
       try {
         const data = await API.login({ email, password });
 
-        // Store token and user data
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
 
         showToast('Login successful! Redirecting...', 'success');
 
-        // Redirect to dashboard
         setTimeout(() => {
           window.location.href = 'dashboard.html';
         }, 1000);
-
       } catch (error) {
         showToast(error.message || 'Login failed. Please check your credentials.', 'error');
         setLoading(submitBtn, false);
