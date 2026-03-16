@@ -8,406 +8,479 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/components.css">
 
   <style>
+    :root {
+      --neon: #63f3ff;
+      --neon-soft: rgba(99, 243, 255, 0.2);
+      --panel-dark: rgba(2, 8, 20, 0.88);
+      --panel-deep: rgba(4, 14, 32, 0.96);
+      --panel-line: rgba(99, 243, 255, 0.5);
+    }
+
     body {
+      margin: 0;
       min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, rgba(212, 167, 48, 0.18), transparent 34%),
-        radial-gradient(circle at bottom right, rgba(26, 125, 55, 0.24), transparent 32%),
-        linear-gradient(135deg, #0f172a 0%, #16213e 48%, #1a1a2e 100%);
+      font-family: 'Rajdhani', sans-serif;
       color: var(--text-light);
+      background:
+        radial-gradient(circle at 20% 25%, rgba(52, 211, 235, 0.18), transparent 22%),
+        radial-gradient(circle at 78% 35%, rgba(34, 163, 72, 0.14), transparent 24%),
+        linear-gradient(180deg, #02040a 0%, #030712 52%, #020409 100%);
       overflow-x: hidden;
     }
 
-    .login-shell {
+    .login-page {
       position: relative;
       min-height: 100vh;
-      padding: 7rem 0 3rem;
-    }
-
-    .login-shell::before,
-    .login-shell::after {
-      content: '';
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      filter: blur(12px);
-      opacity: 0.65;
-    }
-
-    .login-shell::before {
-      width: 280px;
-      height: 280px;
-      top: 120px;
-      left: -100px;
-      background: radial-gradient(circle, rgba(212, 167, 48, 0.28), transparent 70%);
-    }
-
-    .login-shell::after {
-      width: 360px;
-      height: 360px;
-      right: -140px;
-      bottom: 30px;
-      background: radial-gradient(circle, rgba(26, 125, 55, 0.22), transparent 70%);
-    }
-
-    .login-layout {
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: clamp(1.5rem, 3vw, 3rem);
-      align-items: stretch;
-      position: relative;
-      z-index: 1;
-    }
-
-    .login-showcase {
-      position: relative;
-      padding: clamp(2rem, 4vw, 4rem);
-      border-radius: var(--radius-2xl);
-      background:
-        linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)),
-        linear-gradient(135deg, rgba(22, 33, 62, 0.96), rgba(26, 26, 46, 0.96));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: var(--shadow-xl);
-      overflow: hidden;
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 680px;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(0.8rem, 2vh, 2rem) 1rem;
     }
 
-    .login-showcase::before {
+    .login-page::before,
+    .login-page::after {
       content: '';
       position: absolute;
-      inset: auto -10% -30% auto;
-      width: 360px;
-      height: 360px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(26, 125, 55, 0.24), transparent 70%);
+      inset: 0;
+      pointer-events: none;
     }
 
-    .showcase-top,
-    .showcase-bottom {
+    .login-page::before {
+      background:
+        linear-gradient(rgba(99, 243, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 243, 255, 0.04) 1px, transparent 1px);
+      background-size: 70px 70px;
+      mask-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.9) 18%, rgba(0, 0, 0, 0.9) 82%, transparent);
+    }
+
+    .login-page::after {
+      background: radial-gradient(circle at center, transparent 55%, rgba(0, 0, 0, 0.45) 100%);
+    }
+
+    .scene-shell {
+      width: min(1280px, calc(100vw - 1rem));
       position: relative;
       z-index: 1;
     }
 
-    .showcase-brand {
+    .top-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: clamp(0.65rem, 1.6vh, 1.25rem);
+      padding: 0 0.25rem;
+    }
+
+    .brand-chip,
+    .back-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.85rem;
-      color: white;
-      font-weight: 800;
-      letter-spacing: 0.04em;
+      gap: 0.8rem;
+      color: rgba(255, 255, 255, 0.78);
       font-size: 1rem;
-      margin-bottom: 2rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    .showcase-brand img {
-      width: 46px;
-      height: 46px;
+    .brand-chip {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .brand-chip img {
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+      border: 1px solid rgba(99, 243, 255, 0.4);
+      box-shadow: 0 0 18px rgba(99, 243, 255, 0.24);
     }
 
-    .showcase-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      padding: 0.45rem 0.95rem;
-      border-radius: var(--radius-full);
-      background: rgba(255, 255, 255, 0.09);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.86);
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 1.25rem;
+    .back-link {
+      color: rgba(99, 243, 255, 0.82);
+      font-weight: 600;
     }
 
-    .showcase-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.5rem, 4vw, 4.5rem);
-      line-height: 1.04;
+    .back-link:hover {
       color: white;
-      margin-bottom: 1rem;
-      max-width: 9ch;
     }
 
-    .showcase-title strong {
-      color: var(--secondary-light);
-      font-weight: 700;
-    }
-
-    .showcase-copy {
-      max-width: 560px;
-      color: rgba(255, 255, 255, 0.75);
-      font-size: 1.02rem;
-      margin-bottom: 2rem;
-    }
-
-    .showcase-highlights {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .highlight-card {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 1.2rem;
-      padding: 1.1rem;
-      backdrop-filter: blur(10px);
-    }
-
-    .highlight-value {
-      display: block;
-      color: white;
-      font-size: 1.3rem;
-      font-weight: 800;
-      margin-bottom: 0.25rem;
-    }
-
-    .highlight-label {
-      display: block;
-      color: rgba(255, 255, 255, 0.72);
-      font-size: 0.88rem;
-      line-height: 1.5;
-    }
-
-    .showcase-panel {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 1rem;
-      align-items: stretch;
-    }
-
-    .vehicle-spotlight,
-    .trust-note {
-      border-radius: 1.35rem;
-      padding: 1.25rem;
+    .login-frame {
       position: relative;
-      overflow: hidden;
-      min-height: 210px;
+      padding: 2px;
+      clip-path: polygon(4.5% 0, 100% 0, 95.5% 100%, 0 100%);
+      background: linear-gradient(135deg, rgba(99, 243, 255, 0.9), rgba(99, 243, 255, 0.24), rgba(99, 243, 255, 0.85));
+      box-shadow:
+        0 0 16px rgba(99, 243, 255, 0.45),
+        0 0 38px rgba(99, 243, 255, 0.18),
+        0 28px 60px rgba(0, 0, 0, 0.42);
+      animation: framePulse 3.8s ease-in-out infinite;
     }
 
-    .vehicle-spotlight {
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
-        #f8fafc;
-      color: var(--text-primary);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
-
-    .vehicle-spotlight img {
+    .login-frame::before {
+      content: '';
       position: absolute;
-      right: 0;
-      bottom: 6px;
-      width: 78%;
-      max-width: 320px;
-      filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.22));
+      inset: -14px;
+      clip-path: polygon(4.5% 0, 100% 0, 95.5% 100%, 0 100%);
+      border: 1px solid rgba(99, 243, 255, 0.12);
+      filter: blur(14px);
     }
 
-    .vehicle-spotlight .tag {
-      display: inline-flex;
-      width: fit-content;
-      padding: 0.35rem 0.8rem;
-      border-radius: var(--radius-full);
-      background: rgba(26, 125, 55, 0.12);
-      color: var(--primary);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 0.65rem;
+    .login-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(4.5% 0, 100% 0, 95.5% 100%, 0 100%);
+      background: linear-gradient(110deg, transparent 22%, rgba(99, 243, 255, 0.22) 32%, transparent 42%);
+      transform: translateX(-120%);
+      animation: borderSweep 5.2s linear infinite;
+      pointer-events: none;
     }
 
-    .vehicle-spotlight h3 {
-      font-size: 1.25rem;
-      margin-bottom: 0.25rem;
-      color: var(--text-primary);
-      max-width: 180px;
+    .login-stage {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      min-height: min(680px, calc(100vh - 90px));
+      clip-path: polygon(4.5% 0, 100% 0, 95.5% 100%, 0 100%);
+      background:
+        linear-gradient(115deg, rgba(8, 32, 46, 0.95) 0%, rgba(13, 72, 94, 0.92) 39%, rgba(7, 14, 28, 0.98) 39.3%, rgba(2, 8, 20, 0.98) 100%);
+      overflow: hidden;
+      position: relative;
     }
 
-    .vehicle-spotlight p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      max-width: 180px;
+    .login-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(99, 243, 255, 0.14), transparent 32%),
+        linear-gradient(315deg, rgba(99, 243, 255, 0.06), transparent 30%);
+      pointer-events: none;
     }
 
-    .trust-note {
-      background: linear-gradient(180deg, rgba(212, 167, 48, 0.18), rgba(212, 167, 48, 0.08));
-      border: 1px solid rgba(212, 167, 48, 0.28);
-      color: white;
+    .login-stage::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent, rgba(99, 243, 255, 0.04), transparent);
+      background-size: 100% 9px;
+      opacity: 0.18;
+      mix-blend-mode: screen;
+      animation: scanlines 10s linear infinite;
+      pointer-events: none;
+    }
+
+    .hero-panel,
+    .form-panel {
+      position: relative;
+      z-index: 1;
+      padding: clamp(1.8rem, 3.4vh, 3.4rem);
+    }
+
+    .hero-panel {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-    }
-
-    .trust-note span {
-      width: 48px;
-      height: 48px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 1rem;
-      background: rgba(255, 255, 255, 0.18);
-      font-size: 1.35rem;
-    }
-
-    .trust-note h3 {
-      color: white;
-      margin-bottom: 0.45rem;
-      font-size: 1.1rem;
-    }
-
-    .trust-note p {
-      margin: 0;
-      color: rgba(255, 255, 255, 0.78);
-      font-size: 0.9rem;
-    }
-
-    .login-card {
-      background: rgba(255, 255, 255, 0.94);
-      color: var(--text-primary);
-      border-radius: var(--radius-2xl);
-      box-shadow: 0 30px 80px rgba(5, 15, 35, 0.34);
-      border: 1px solid rgba(255, 255, 255, 0.72);
+      padding-left: clamp(3.2rem, 5vw, 5.2rem);
+      padding-right: clamp(2rem, 3.4vw, 3.2rem);
       overflow: hidden;
-      position: relative;
-      min-height: 680px;
     }
 
-    .login-card::before {
+    .hero-panel::before {
       content: '';
       position: absolute;
-      inset: 0 0 auto;
-      height: 6px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary-light));
+      width: 320px;
+      height: 320px;
+      left: -120px;
+      top: 18%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 243, 255, 0.22), transparent 68%);
+      filter: blur(18px);
+      animation: orbDrift 8s ease-in-out infinite;
+      pointer-events: none;
     }
 
-    .login-card-inner {
-      height: 100%;
+    .hero-panel::after {
+      content: '';
+      position: absolute;
+      inset: 12% 24% 18% 0;
+      background: linear-gradient(125deg, rgba(255, 255, 255, 0.06), transparent 45%);
+      clip-path: polygon(0 0, 84% 0, 44% 100%, 0 100%);
+      opacity: 0.55;
+      animation: wedgeGlow 4.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 0.42rem 0.85rem;
+      margin-bottom: clamp(0.8rem, 1.5vh, 1.4rem);
+      border: 1px solid rgba(99, 243, 255, 0.28);
+      border-radius: 999px;
+      background: rgba(99, 243, 255, 0.08);
+      font-size: clamp(0.78rem, 1.2vw, 0.92rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.78);
+      animation: fadeRise 0.8s ease-out 0.2s both;
+    }
+
+    .hero-title {
+      font-family: 'Orbitron', sans-serif;
+      max-width: 5.2ch;
+      font-size: clamp(2.1rem, 4.25vw, 4.55rem);
+      line-height: 0.94;
+      letter-spacing: 0.03em;
+      margin: 0 0 clamp(0.5rem, 1.2vh, 1rem);
+      text-transform: uppercase;
+      text-shadow: 0 0 24px rgba(99, 243, 255, 0.18);
+      overflow: hidden;
+    }
+
+    .hero-title span {
+      display: block;
+      color: var(--neon);
+    }
+
+    .hero-title .title-line {
+      display: block;
+      transform: translateY(115%);
+      opacity: 0;
+      animation: textLift 0.9s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+    }
+
+    .hero-title .title-line:last-child {
+      animation-delay: 0.2s;
+    }
+
+    .hero-copy {
+      max-width: 330px;
+      margin: 0 0 clamp(0.9rem, 1.8vh, 1.8rem);
+      color: rgba(233, 247, 255, 0.76);
+      font-size: clamp(0.94rem, 1.4vw, 1.08rem);
+      line-height: 1.45;
+      animation: fadeRise 0.9s ease-out 0.45s both;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(0.7rem, 1.2vw, 1rem);
+      max-width: 350px;
+    }
+
+    .status-card {
+      padding: clamp(0.75rem, 1.5vh, 1rem) 1rem;
+      border: 1px solid rgba(99, 243, 255, 0.18);
+      background: rgba(3, 11, 23, 0.34);
+      backdrop-filter: blur(8px);
+      transform: translateY(24px);
+      opacity: 0;
+      animation: cardRise 0.8s ease-out forwards;
+    }
+
+    .status-card:nth-child(1) { animation-delay: 0.55s; }
+    .status-card:nth-child(2) { animation-delay: 0.68s; }
+    .status-card:nth-child(3) { animation-delay: 0.81s; }
+    .status-card:nth-child(4) { animation-delay: 0.94s; }
+
+    .status-card strong {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+      letter-spacing: 0.08em;
+    }
+
+    .status-card span {
+      color: rgba(255, 255, 255, 0.62);
+      font-size: clamp(0.82rem, 1vw, 0.92rem);
+    }
+
+    .hero-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: clamp(1rem, 2vh, 2rem);
+      animation: fadeRise 0.9s ease-out 1s both;
+    }
+
+    .hero-footer p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.55);
+      max-width: 290px;
+      font-size: clamp(0.78rem, 1vw, 0.92rem);
+    }
+
+    .hero-lines {
+      width: clamp(78px, 8vw, 110px);
+      height: clamp(50px, 6vh, 74px);
+      opacity: 0.62;
+      background:
+        linear-gradient(180deg, transparent, rgba(99, 243, 255, 0.22)),
+        repeating-linear-gradient(180deg, rgba(99, 243, 255, 0.7) 0 2px, transparent 2px 11px);
+      clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%);
+      animation: dataFlicker 3.2s ease-in-out infinite;
+    }
+
+    .form-panel {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: clamp(2rem, 4vw, 3.2rem);
+      padding-left: clamp(2.8rem, 4vw, 4rem);
+      padding-right: clamp(3.2rem, 4.5vw, 5rem);
     }
 
-    .back-home {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-secondary);
-      font-size: 0.92rem;
-      font-weight: 600;
-      margin-bottom: 2rem;
-      width: fit-content;
+    .form-shell {
+      max-width: 540px;
+      margin-left: auto;
+      width: 100%;
+      position: relative;
+      animation: formPanelIn 1s cubic-bezier(0.2, 0.9, 0.2, 1) 0.25s both;
     }
 
-    .back-home:hover {
-      color: var(--primary);
+    .form-shell::before {
+      content: '';
+      position: absolute;
+      inset: -1rem -1.4rem;
+      border: 1px solid rgba(99, 243, 255, 0.08);
+      clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+      pointer-events: none;
     }
 
-    .login-header h1 {
-      margin-bottom: 0.65rem;
-      font-size: clamp(2rem, 3vw, 2.8rem);
+    .form-title {
+      margin: 0 0 0.4rem;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      animation: flickerIn 1.2s ease-out 0.55s both;
     }
 
-    .login-header p {
-      color: var(--text-muted);
-      margin-bottom: 1.6rem;
-      max-width: 420px;
-    }
-
-    .login-points {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.7rem;
-      margin-bottom: 1.8rem;
-    }
-
-    .login-point {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.65rem 0.9rem;
-      border-radius: var(--radius-full);
-      background: rgba(26, 125, 55, 0.08);
-      color: var(--text-secondary);
-      font-size: 0.88rem;
-      font-weight: 600;
-    }
-
-    .login-point strong {
-      color: var(--primary);
-      font-weight: 800;
+    .form-subtitle {
+      margin-bottom: clamp(0.9rem, 1.8vh, 1.6rem);
+      color: rgba(255, 255, 255, 0.62);
+      font-size: clamp(0.88rem, 1vw, 0.98rem);
+      animation: fadeRise 0.85s ease-out 0.75s both;
     }
 
     .auth-form {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: clamp(0.7rem, 1.2vh, 1rem);
+    }
+
+    .form-group {
+      margin-bottom: 0;
+      opacity: 0;
+      transform: translateX(28px);
+      animation: fieldSlideIn 0.75s ease-out forwards;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.9s; }
+    .form-group:nth-child(2) { animation-delay: 1.05s; }
+
+    .form-label {
+      margin-bottom: 0.35rem;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: clamp(0.72rem, 0.9vw, 0.8rem);
+      letter-spacing: 0.14em;
     }
 
     .input-wrap {
       position: relative;
+      overflow: hidden;
     }
 
-    .form-label {
-      margin-bottom: 0.55rem;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-
-    .form-input {
-      border: 1px solid rgba(26, 26, 46, 0.12);
-      border-radius: 1rem;
-      padding: 1rem 1rem 1rem 3rem;
-      background: rgba(247, 247, 247, 0.88);
-    }
-
-    .form-input:focus {
-      background: white;
+    .input-wrap::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99, 243, 255, 0.9), transparent);
+      transform: translateX(-100%);
+      animation: inputScan 3.5s ease-in-out infinite;
     }
 
     .input-icon {
       position: absolute;
-      left: 1rem;
+      left: 0;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 1rem;
-      color: var(--primary);
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.95rem;
       pointer-events: none;
+    }
+
+    .form-input {
+      padding: 0.72rem 3rem 0.72rem 1.35rem;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.42);
+      border-radius: 0;
+      background: transparent;
+      color: white;
+      box-shadow: none;
+      font-size: 0.96rem;
+    }
+
+    .form-input:focus {
+      border-color: var(--neon);
+      box-shadow: 0 10px 22px rgba(99, 243, 255, 0.08);
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .field-trace {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(99, 243, 255, 0.78);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: traceBlink 1.8s steps(2, end) infinite;
     }
 
     .password-toggle {
       position: absolute;
-      right: 0.85rem;
+      right: 0;
       top: 50%;
       transform: translateY(-50%);
       border: none;
       background: transparent;
-      color: var(--text-muted);
-      font-size: 0.9rem;
+      color: rgba(99, 243, 255, 0.78);
+      font-size: 0.78rem;
       font-weight: 700;
+      letter-spacing: 0.08em;
       cursor: pointer;
-      padding: 0.3rem;
+      padding: 0.2rem 0;
     }
 
     .password-toggle:hover {
-      color: var(--primary);
+      color: white;
+    }
+
+    .form-error {
+      min-height: 1rem;
+      margin-top: 0.2rem;
+      color: #ff8c8c;
+      font-size: 0.78rem;
     }
 
     .form-meta {
@@ -415,281 +488,470 @@
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      margin-top: 0.25rem;
-      margin-bottom: 0.4rem;
+      margin-top: 0.1rem;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeRise 0.75s ease-out 1.15s both;
     }
 
     .remember-me {
       display: inline-flex;
       align-items: center;
       gap: 0.55rem;
-      color: var(--text-secondary);
-      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.88rem;
     }
 
     .remember-me input {
-      accent-color: var(--primary);
-      width: 16px;
-      height: 16px;
+      accent-color: var(--neon);
     }
 
     .forgot-link {
-      color: var(--primary);
-      font-size: 0.92rem;
-      font-weight: 700;
+      color: rgba(99, 243, 255, 0.82);
+      font-size: 0.88rem;
+      font-weight: 600;
     }
 
     .forgot-link:hover {
-      color: var(--primary-dark);
+      color: white;
     }
 
     .login-btn {
       width: 100%;
-      min-height: 56px;
-      font-size: 1rem;
-      font-weight: 700;
-      border-radius: 1rem;
+      margin-top: 0.4rem;
+      min-height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(99, 243, 255, 0.6);
+      background: linear-gradient(180deg, rgba(77, 232, 255, 0.6), rgba(7, 119, 136, 0.94));
+      color: #031019;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.88rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        0 0 22px rgba(99, 243, 255, 0.22);
+      overflow: hidden;
+      opacity: 0;
+      animation:
+        fadeRise 0.75s ease-out 1.3s both,
+        buttonGlow 2.6s ease-in-out 1.8s infinite;
     }
 
-    .secure-note {
-      margin-top: 1rem;
-      padding: 0.95rem 1rem;
-      border-radius: 1rem;
-      background: linear-gradient(135deg, rgba(26, 125, 55, 0.06), rgba(212, 167, 48, 0.08));
-      border: 1px solid rgba(26, 125, 55, 0.1);
-      color: var(--text-secondary);
-      font-size: 0.9rem;
+    .login-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 28%, rgba(255, 255, 255, 0.58) 50%, transparent 72%);
+      transform: translateX(-130%);
+      animation: buttonSweep 3.6s ease-in-out 1.6s infinite;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 0 28px rgba(99, 243, 255, 0.34);
+    }
+
+    .panel-note {
+      margin-top: 0.85rem;
+      color: rgba(255, 255, 255, 0.48);
+      font-size: 0.84rem;
+      text-align: center;
+      opacity: 0;
+      animation: fadeRise 0.85s ease-out 1.45s both;
+    }
+
+    .panel-note a {
+      color: rgba(99, 243, 255, 0.88);
+      font-weight: 700;
+    }
+
+    .panel-note a:hover {
+      color: white;
     }
 
     .auth-footer {
-      margin-top: 1.7rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(26, 26, 46, 0.08);
+      margin-top: 0.8rem;
       text-align: center;
+      opacity: 0;
+      animation: fadeRise 0.85s ease-out 1.6s both;
     }
 
     .auth-footer p {
       margin: 0;
-      color: var(--text-muted);
+      color: rgba(255, 255, 255, 0.52);
+      font-size: 0.8rem;
+    }
+
+    @media (max-height: 820px) and (min-width: 961px) {
+      .scene-shell {
+        width: min(1180px, calc(100vw - 1rem));
+      }
+
+      .login-stage {
+        min-height: min(610px, calc(100vh - 80px));
+      }
+
+      .hero-panel,
+      .form-panel {
+        padding: 1.45rem 2rem;
+      }
+
+      .hero-panel {
+        padding-left: 3rem;
+        padding-right: 1.8rem;
+      }
+
+      .hero-title {
+        max-width: 5.4ch;
+        font-size: clamp(2rem, 3.6vw, 3.7rem);
+      }
+
+      .hero-copy {
+        max-width: 300px;
+        font-size: 0.92rem;
+      }
+
+      .status-grid {
+        max-width: 315px;
+        gap: 0.65rem;
+      }
+
+      .status-card {
+        padding: 0.7rem 0.8rem;
+      }
+
+      .hero-footer {
+        padding-top: 0.75rem;
+      }
+
+      .form-shell {
+        max-width: 480px;
+      }
     }
 
     .auth-footer a {
-      color: var(--primary);
+      color: rgba(99, 243, 255, 0.9);
       font-weight: 700;
     }
 
-    @media (max-width: 1080px) {
-      .login-layout {
-        grid-template-columns: 1fr;
+    @keyframes framePulse {
+      0%, 100% {
+        box-shadow:
+          0 0 16px rgba(99, 243, 255, 0.45),
+          0 0 38px rgba(99, 243, 255, 0.18),
+          0 28px 60px rgba(0, 0, 0, 0.42);
       }
-
-      .login-showcase,
-      .login-card {
-        min-height: auto;
-      }
-
-      .showcase-title {
-        max-width: 100%;
+      50% {
+        box-shadow:
+          0 0 22px rgba(99, 243, 255, 0.65),
+          0 0 56px rgba(99, 243, 255, 0.26),
+          0 30px 64px rgba(0, 0, 0, 0.46);
       }
     }
 
-    @media (max-width: 768px) {
-      .login-shell {
-        padding-top: 5.5rem;
-      }
+    @keyframes borderSweep {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(135%); }
+    }
 
-      .login-showcase,
-      .login-card-inner {
-        padding: 1.5rem;
-      }
+    @keyframes scanlines {
+      0% { transform: translateY(-12px); }
+      100% { transform: translateY(12px); }
+    }
 
-      .showcase-highlights,
-      .showcase-panel {
+    @keyframes orbDrift {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(30px, -18px, 0) scale(1.08); }
+    }
+
+    @keyframes wedgeGlow {
+      0%, 100% { opacity: 0.34; }
+      50% { opacity: 0.72; }
+    }
+
+    @keyframes textLift {
+      0% {
+        transform: translateY(115%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeRise {
+      0% {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes cardRise {
+      0% {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes dataFlicker {
+      0%, 100% { opacity: 0.5; }
+      25% { opacity: 0.75; }
+      26% { opacity: 0.4; }
+      27% { opacity: 0.72; }
+      62% { opacity: 0.58; }
+      63% { opacity: 0.8; }
+    }
+
+    @keyframes formPanelIn {
+      0% {
+        opacity: 0;
+        transform: translateX(42px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @keyframes flickerIn {
+      0%, 15%, 17%, 22%, 55% {
+        opacity: 0;
+        text-shadow: none;
+      }
+      16%, 21%, 24%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 16px rgba(99, 243, 255, 0.18);
+      }
+    }
+
+    @keyframes fieldSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(28px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes inputScan {
+      0%, 100% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; }
+      55% { transform: translateX(100%); opacity: 0.85; }
+      56% { opacity: 0; }
+    }
+
+    @keyframes traceBlink {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.95; }
+    }
+
+    @keyframes buttonGlow {
+      0%, 100% {
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.5),
+          0 0 22px rgba(99, 243, 255, 0.22);
+      }
+      50% {
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.62),
+          0 0 34px rgba(99, 243, 255, 0.38);
+      }
+    }
+
+    @keyframes buttonSweep {
+      0%, 100% { transform: translateX(-130%); }
+      45%, 55% { transform: translateX(130%); }
+    }
+
+    @media (max-width: 960px) {
+      .login-stage {
         grid-template-columns: 1fr;
+        clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
       }
 
-      .vehicle-spotlight,
-      .trust-note {
-        min-height: 180px;
+      .login-frame {
+        clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
       }
 
-      .vehicle-spotlight img {
-        width: 62%;
+      .hero-panel,
+      .form-panel {
+        padding: 2rem;
       }
 
-      .form-meta {
+      .hero-panel {
+        padding-left: 2rem;
+        padding-bottom: 1rem;
+      }
+
+      .form-panel {
+        padding-top: 0.5rem;
+      }
+
+      .form-shell {
+        max-width: none;
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .login-page {
+        padding: 1rem 0.8rem;
+      }
+
+      .top-strip {
         flex-direction: column;
         align-items: flex-start;
       }
-    }
 
-    @media (max-width: 480px) {
-      .login-shell {
-        padding: 5rem 0 1.5rem;
+      .hero-title {
+        max-width: none;
+        font-size: 2.55rem;
       }
 
-      .login-showcase {
-        padding: 1.25rem;
+      .status-grid {
+        grid-template-columns: 1fr;
       }
 
-      .showcase-title {
-        font-size: 2.15rem;
+      .hero-footer {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      .login-header h1 {
-        font-size: 1.8rem;
+      .hero-lines {
+        width: 84px;
+        height: 58px;
       }
 
-      .form-input {
-        padding-left: 2.75rem;
+      .hero-panel,
+      .form-panel {
+        padding: 1.35rem;
       }
     }
   </style>
 </head>
 <body>
-  <nav class="navbar" id="navbar">
-    <div class="container">
-      <a href="index.html" class="navbar-brand">
-        <img src="public/images/ak-logo.png" alt="AK Enterprises Logo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-        AK ENTERPRISES
-      </a>
-
-      <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
-        &#9776;
-      </button>
-
-      <ul class="navbar-menu" id="navbarMenu">
-        <li><a href="index.html" class="navbar-link">Home</a></li>
-        <li><a href="vehicles.html" class="navbar-link">Rent a Bike</a></li>
-        <li><a href="vehicles.html?type=scooty" class="navbar-link">Rent a Scooty</a></li>
-        <li><a href="vehicles.html?type=car" class="navbar-link">Rent a Car</a></li>
-      </ul>
-
-      <div class="navbar-icons">
-        <a href="register.html" class="btn btn-outline btn-sm">Create Account</a>
+  <main class="login-page">
+    <div class="scene-shell">
+      <div class="top-strip">
+        <a href="index.html" class="brand-chip">
+          <img src="public/images/ak-logo.png" alt="AK Enterprises Logo">
+          <span>AK Enterprises</span>
+        </a>
+        <a href="index.html" class="back-link">Back to home</a>
       </div>
-    </div>
-  </nav>
 
-  <main class="login-shell">
-    <div class="container">
-      <section class="login-layout">
-        <div class="login-showcase animate-slideInLeft">
-          <div class="showcase-top">
-            <a href="index.html" class="showcase-brand">
-              <img src="public/images/ak-logo.png" alt="AK Enterprises">
-              <span>AK ENTERPRISES</span>
-            </a>
+      <section class="login-frame animate-fadeIn">
+        <div class="login-stage">
+          <div class="hero-panel">
+            <div>
+              <div class="eyebrow">Premium access</div>
+              <h1 class="hero-title">
+                <span class="title-line">Welcome</span>
+                <span class="title-line">Back</span>
+              </h1>
+              <p class="hero-copy">
+                Apni bookings, payment status aur favorite rides ko ek sleek control panel se manage kijiye. Design video reference jaisa neon-tech feel rakha gaya hai.
+              </p>
 
-            <div class="showcase-eyebrow">Premium Vehicle Rentals</div>
-            <h2 class="showcase-title">Drive in with style, log in with <strong>confidence</strong>.</h2>
-            <p class="showcase-copy">
-              Apni bookings, favorite rides aur account details ko ek premium dashboard se manage kijiye. Same website colors, same AK Enterprises identity.
-            </p>
+              <div class="status-grid">
+                <div class="status-card">
+                  <strong>24/7</strong>
+                  <span>Booking support</span>
+                </div>
+                <div class="status-card">
+                  <strong>Fast</strong>
+                  <span>Dashboard access</span>
+                </div>
+                <div class="status-card">
+                  <strong>Secure</strong>
+                  <span>Protected login</span>
+                </div>
+                <div class="status-card">
+                  <strong>AK</strong>
+                  <span>Brand styling</span>
+                </div>
+              </div>
+            </div>
 
-            <div class="showcase-highlights">
-              <div class="highlight-card">
-                <span class="highlight-value">500+</span>
-                <span class="highlight-label">Bikes, cars aur scooties ready for rent</span>
-              </div>
-              <div class="highlight-card">
-                <span class="highlight-value">24/7</span>
-                <span class="highlight-label">Fast support and booking assistance</span>
-              </div>
-              <div class="highlight-card">
-                <span class="highlight-value">10K+</span>
-                <span class="highlight-label">Happy riders across cities</span>
-              </div>
+            <div class="hero-footer">
+              <p>Vehicle on Rent ke liye dark futuristic login experience, responsive layout ke saath.</p>
+              <div class="hero-lines" aria-hidden="true"></div>
             </div>
           </div>
 
-          <div class="showcase-bottom">
-            <div class="showcase-panel">
-              <article class="vehicle-spotlight">
-                <span class="tag">Featured Ride</span>
-                <h3>Luxury SUV Experience</h3>
-                <p>Comfort, class and clean pricing for every journey.</p>
-                <img src="public/images/cars/black-luxury-suv.png" alt="Luxury SUV">
-              </article>
+          <div class="form-panel">
+            <div class="form-shell">
+              <h2 class="form-title">Login</h2>
+              <p class="form-subtitle">Use your AK Enterprises account credentials.</p>
 
-              <article class="trust-note">
-                <span>✓</span>
-                <div>
-                  <h3>Secure access</h3>
-                  <p>Login karke bookings track karein, payment updates dekhein aur apna profile safely manage karein.</p>
+              <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                  <label class="form-label" for="email">Email</label>
+                  <div class="input-wrap">
+                    <span class="input-icon">@</span>
+                    <input
+                      type="email"
+                      id="email"
+                      class="form-input"
+                      placeholder="your.email@example.com"
+                      required
+                    >
+                    <span class="field-trace">ID</span>
+                  </div>
+                  <span class="form-error" id="emailError"></span>
                 </div>
-              </article>
-            </div>
-          </div>
-        </div>
 
-        <div class="login-card animate-slideInRight">
-          <div class="login-card-inner">
-            <a href="index.html" class="back-home">&#8592; Back to home</a>
-
-            <div class="login-header">
-              <h1>Welcome back</h1>
-              <p>Apne AK Enterprises account me sign in kijiye aur apni bookings, wishlist aur ride history access kijiye.</p>
-            </div>
-
-            <div class="login-points">
-              <span class="login-point"><strong>Fast</strong> booking access</span>
-              <span class="login-point"><strong>Easy</strong> dashboard control</span>
-              <span class="login-point"><strong>Secure</strong> account login</span>
-            </div>
-
-            <form id="loginForm" class="auth-form">
-              <div class="form-group">
-                <label class="form-label" for="email">Email Address</label>
-                <div class="input-wrap">
-                  <span class="input-icon">@</span>
-                  <input
-                    type="email"
-                    id="email"
-                    class="form-input"
-                    placeholder="your.email@example.com"
-                    required
-                  >
+                <div class="form-group">
+                  <label class="form-label" for="password">Password</label>
+                  <div class="input-wrap">
+                    <span class="input-icon">#</span>
+                    <input
+                      type="password"
+                      id="password"
+                      class="form-input"
+                      placeholder="Enter your password"
+                      required
+                    >
+                    <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">Show</button>
+                  </div>
+                  <span class="form-error" id="passwordError"></span>
                 </div>
-                <span class="form-error" id="emailError"></span>
-              </div>
 
-              <div class="form-group">
-                <label class="form-label" for="password">Password</label>
-                <div class="input-wrap">
-                  <span class="input-icon">&#128274;</span>
-                  <input
-                    type="password"
-                    id="password"
-                    class="form-input"
-                    placeholder="Enter your password"
-                    required
-                  >
-                  <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">SHOW</button>
+                <div class="form-meta">
+                  <label class="remember-me" for="rememberMe">
+                    <input type="checkbox" id="rememberMe">
+                    <span>Remember me</span>
+                  </label>
+
+                  <a href="#" class="forgot-link" id="forgotPasswordLink">Forgot password?</a>
                 </div>
-                <span class="form-error" id="passwordError"></span>
+
+                <button type="submit" class="btn login-btn">
+                  Sign In
+                </button>
+              </form>
+
+              <div class="panel-note">
+                New here? <a href="register.html">Create account</a>
               </div>
 
-              <div class="form-meta">
-                <label class="remember-me" for="rememberMe">
-                  <input type="checkbox" id="rememberMe">
-                  <span>Remember me</span>
-                </label>
-
-                <a href="#" class="forgot-link" id="forgotPasswordLink">Forgot password?</a>
+              <div class="auth-footer">
+                <p>Ride history, bookings and profile controls in one place.</p>
               </div>
-
-              <button type="submit" class="btn btn-primary login-btn">
-                Sign In
-              </button>
-
-              <div class="secure-note">
-                Your login stays connected to the same AK Enterprises brand style as the rest of the website, with clean green, gold and navy accents.
-              </div>
-            </form>
-
-            <div class="auth-footer">
-              <p>Don't have an account? <a href="register.html">Create one here</a></p>
             </div>
           </div>
         </div>
@@ -704,19 +966,6 @@
       window.location.href = 'dashboard.html';
     }
 
-    window.addEventListener('scroll', () => {
-      const navbar = document.getElementById('navbar');
-      if (window.scrollY > 20) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-
-    document.getElementById('navbarToggle')?.addEventListener('click', () => {
-      document.getElementById('navbarMenu')?.classList.toggle('active');
-    });
-
     document.getElementById('forgotPasswordLink')?.addEventListener('click', (event) => {
       event.preventDefault();
       showToast('Password recovery feature coming soon.', 'warning');
@@ -728,7 +977,7 @@
       const isPassword = passwordInput.type === 'password';
 
       passwordInput.type = isPassword ? 'text' : 'password';
-      toggleButton.textContent = isPassword ? 'HIDE' : 'SHOW';
+      toggleButton.textContent = isPassword ? 'Hide' : 'Show';
       toggleButton.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
     });
 
