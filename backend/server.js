@@ -59,22 +59,24 @@ const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/vehicle-rental';
 
 mongoose.connect(MONGODB_URI)
-  .then(() => {
-    console.log('✓ Connected to MongoDB');
+  .then(() => console.log('✓ Connected to MongoDB'))
+  .catch((err) => console.error('✗ MongoDB connection error:', err));
 
-    // Start server
-    app.listen(PORT, () => {
-      console.log(`✓ Server is running on port ${PORT}`);
-      console.log(`✓ API available at http://localhost:${PORT}/api`);
-    });
-  })
-  .catch((err) => {
-    console.error('✗ MongoDB connection error:', err);
-    process.exit(1);
+// Start server locally only if not in serverless environment
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`✓ Server is running on port ${PORT}`);
+    console.log(`✓ API available at http://localhost:${PORT}/api`);
   });
+}
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
   console.error('Unhandled Promise Rejection:', err);
-  process.exit(1);
+  if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    process.exit(1);
+  }
 });
+
+// Export the Express API for Serverless platforms like Vercel
+module.exports = app;
