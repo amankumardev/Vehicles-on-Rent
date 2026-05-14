@@ -111,7 +111,14 @@
       document.getElementById('vehicleDetails').innerHTML = `
         <div class="vehicle-details-layout">
           <div class="vehicle-images">
-            <img src="${vehicle.images[0] || 'https://via.placeholder.com/800x500'}" alt="${vehicle.name}" class="main-vehicle-image">
+            <img id="mainVehicleImg" src="${vehicle.images[0] || 'https://via.placeholder.com/800x500'}" alt="${vehicle.name}" class="main-vehicle-image" style="width: 100%; height: 400px; object-fit: cover;">
+            ${vehicle.images.length > 1 ? `
+            <div class="thumbnail-list" style="display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; padding-bottom: 5px;">
+              ${vehicle.images.map(img => `
+                <img src="${img}" alt="thumbnail" onclick="document.getElementById('mainVehicleImg').src='${img}'" style="width: 100px; height: 75px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='transparent'">
+              `).join('')}
+            </div>
+            ` : ''}
           </div>
           
           <div class="vehicle-info card">

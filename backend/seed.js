@@ -15,7 +15,7 @@ const sampleVehicles = [
         description: 'A reliable and comfortable sedan perfect for daily commutes and long drives. Features modern amenities and excellent fuel efficiency.',
         pricePerDay: 45,
         features: ['Bluetooth', 'Backup Camera', 'Cruise Control', 'USB Ports', 'Air Conditioning'],
-        images: ['/images/cars/car-1.png'],
+        images: ['/images/cars/car-1.png', '/images/cars/car-2.png'],
         specifications: {
             seats: 5,
             transmission: 'automatic',
@@ -40,7 +40,7 @@ const sampleVehicles = [
         description: 'Spacious SUV with excellent cargo space, perfect for family trips and outdoor adventures. Comes with advanced safety features.',
         pricePerDay: 65,
         features: ['All-Wheel Drive', 'Sunroof', 'Navigation', 'Leather Seats', 'Heated Seats'],
-        images: ['/images/cars/car-2.png'],
+        images: ['/images/cars/car-2.png', '/images/cars/black-luxury-suv.png'],
         specifications: {
             seats: 7,
             transmission: 'automatic',
@@ -57,20 +57,45 @@ const sampleVehicles = [
         totalReviews: 89
     },
     {
-        name: 'BMW 5 Series',
-        type: 'luxury',
-        brand: 'BMW',
-        model: '5 Series',
+        name: 'Mahindra Thar',
+        type: 'suv',
+        brand: 'Mahindra',
+        model: 'Thar',
         year: 2024,
-        description: 'Luxury sedan offering premium comfort and cutting-edge technology. Experience the thrill of German engineering.',
-        pricePerDay: 120,
-        features: ['Premium Sound System', 'Massage Seats', 'Adaptive Cruise Control', 'Wireless Charging', 'Ambient Lighting'],
-        images: ['/images/cars/car-1.png'],
+        description: 'Iconic 4x4 off-roader with unmatched capability and bold presence. Ready for any adventure.',
+        pricePerDay: 80,
+        features: ['4x4', 'Convertible Top', 'Touchscreen Infotainment', 'Off-Road Tires', 'Hill Hold Control'],
+        images: ['/images/cars/Mahindra-Thar.e.webp', '/images/cars/ni5cegjo_allnew-thar-suv-unveiled_625x300_15_August_20.webp'],
+        specifications: {
+            seats: 4,
+            transmission: 'manual',
+            fuelType: 'diesel',
+            mileage: '15 MPG',
+            engineCapacity: '2.2L mHawk'
+        },
+        location: {
+            city: 'Mumbai',
+            address: 'Gateway Road'
+        },
+        availability: true,
+        rating: 4.8,
+        totalReviews: 320
+    },
+    {
+        name: 'Land Rover Defender',
+        type: 'luxury',
+        brand: 'Land Rover',
+        model: 'Defender',
+        year: 2024,
+        description: 'Premium luxury SUV that combines exceptional off-road performance with high-end comfort and technology.',
+        pricePerDay: 150,
+        features: ['Terrain Response', 'Air Suspension', 'Panoramic Roof', 'Meridian Audio', '360 Camera'],
+        images: ['/images/cars/green-defender.png', '/images/cars/black-luxury-suv.png'],
         specifications: {
             seats: 5,
             transmission: 'automatic',
             fuelType: 'petrol',
-            mileage: '26 MPG',
+            mileage: '18 MPG',
             engineCapacity: '3.0L'
         },
         location: {
@@ -90,7 +115,7 @@ const sampleVehicles = [
         description: 'All-electric luxury sedan with autopilot capabilities and zero emissions. Experience the future of driving.',
         pricePerDay: 95,
         features: ['Autopilot', 'Supercharging', 'Glass Roof', 'Premium Audio', 'Mobile App Control'],
-        images: ['/images/cars/car-2.png'],
+        images: ['/images/cars/car-2.png', '/images/cars/car-1.png'],
         specifications: {
             seats: 5,
             transmission: 'automatic',
@@ -115,7 +140,7 @@ const sampleVehicles = [
         description: 'Powerful pickup truck built for adventure. Perfect for off-road trips and heavy-duty work.',
         pricePerDay: 85,
         features: ['4x4', 'Tow Package', 'Off-Road Suspension', 'Bed Liner', 'Running Boards'],
-        images: ['/images/cars/car-1.png'],
+        images: ['/images/cars/corporate-luxury-car-rental-mumbai-long-term-rental.webp', '/images/cars/car-1.png'],
         specifications: {
             seats: 5,
             transmission: 'automatic',
