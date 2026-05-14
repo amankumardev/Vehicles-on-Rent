@@ -34,15 +34,24 @@ app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/vehicles', vehicleRoutes);
-app.use('/api/bookings', bookingRoutes);
-app.use('/api/payments', paymentRoutes);
+const apiRouter = express.Router();
+
+apiRouter.use('/auth', authRoutes);
+apiRouter.use('/vehicles', vehicleRoutes);
+apiRouter.use('/bookings', bookingRoutes);
+apiRouter.use('/payments', paymentRoutes);
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+apiRouter.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Vehicle Rental API is running' });
 });
+
+// Mount the router
+// 1. At /api for local development and standard deployment
+app.use('/api', apiRouter);
+
+// 2. At / for Vercel Services (where the /api prefix is stripped by the router)
+app.use('/', apiRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
