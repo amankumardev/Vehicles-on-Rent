@@ -1,5 +1,7 @@
 # RentRide - Vehicle Rental Platform
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/amankumardev/Vehicle-On-Rent)
+
 A modern, full-stack vehicle rental platform with user authentication, booking management, and integrated payment processing.
 
 ## 🚀 Features
