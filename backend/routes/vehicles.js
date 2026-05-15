@@ -1,8 +1,12 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const Vehicle = require('../models/Vehicle');
 const { protect, restrictTo } = require('../middleware/auth');
 
 const router = express.Router();
+
+// Helper: validate ObjectId
+const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 // @route   GET /api/vehicles
 // @desc    Get all vehicles with filtering
@@ -59,6 +63,9 @@ router.get('/', async (req, res) => {
 // @desc    Get single vehicle
 // @access  Public
 router.get('/:id', async (req, res) => {
+    if (!isValidId(req.params.id)) {
+        return res.status(400).json({ success: false, message: 'Invalid vehicle ID format' });
+    }
     try {
         const vehicle = await Vehicle.findById(req.params.id);
 
