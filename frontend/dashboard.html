@@ -126,11 +126,11 @@
                 </div>
                 <div class="booking-detail-item">
                   <span>Total Price:</span>
-                  <strong>$${booking.totalPrice}</strong>
+                  <strong>&#8377;${booking.totalPrice}</strong>
                 </div>
                 <div class="booking-detail-item">
                   <span>Pickup:</span>
-                  <strong>${booking.pickupLocation || 'N/A'}</strong>
+                  <strong>${booking.pickupLocation ? (booking.pickupLocation.city || booking.pickupLocation) : 'N/A'}</strong>
                 </div>
               </div>
 

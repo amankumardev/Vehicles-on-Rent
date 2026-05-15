@@ -129,7 +129,7 @@
             </div>
             
             <div class="vehicle-price">
-              <span style="font-size: 3rem; font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">$${vehicle.pricePerDay}</span>
+              <span style="font-size: 3rem; font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">₹${vehicle.pricePerDay}</span>
               <span style="font-size: 1.25rem; color: var(--text-muted);">/day</span>
             </div>
 
@@ -208,8 +208,8 @@
         const total = days * currentVehicle.pricePerDay;
 
         document.getElementById('totalDays').textContent = days;
-        document.getElementById('pricePerDay').textContent = `$${currentVehicle.pricePerDay}`;
-        document.getElementById('totalPrice').textContent = `$${total}`;
+        document.getElementById('pricePerDay').textContent = `₹${currentVehicle.pricePerDay}`;
+        document.getElementById('totalPrice').textContent = `₹${total}`;
       }
     }
 
@@ -229,8 +229,18 @@
           vehicle: vehicleId,
           startDate,
           endDate,
-          pickupLocation: pickupLocation || currentVehicle.location.city,
-          dropoffLocation: currentVehicle.location.city
+          pickupLocation: {
+            address: pickupLocation || currentVehicle.location.address || '',
+            city: currentVehicle.location.city || '',
+            state: currentVehicle.location.state || '',
+            zipCode: currentVehicle.location.zipCode || ''
+          },
+          dropoffLocation: {
+            address: '',
+            city: currentVehicle.location.city || '',
+            state: currentVehicle.location.state || '',
+            zipCode: currentVehicle.location.zipCode || ''
+          }
         });
 
         if (bookingData.success) {

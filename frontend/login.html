@@ -973,9 +973,8 @@
 
   <script src="js/utils.js"></script>
   <script src="js/api.js"></script>
-  <script type="module" src="/src/main.js"></script>
   <script>
-    if (getToken()) {
+    if (localStorage.getItem('token')) {
       window.location.href = 'dashboard.html';
     }
 
