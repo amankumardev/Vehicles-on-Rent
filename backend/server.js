@@ -2,10 +2,16 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+<<<<<<< HEAD
 const path = require('path');
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '.env') });
+=======
+
+// Load environment variables
+dotenv.config();
+>>>>>>> ca7a6386b00633955aab542622fac8e44117eb13
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -13,6 +19,11 @@ const vehicleRoutes = require('./routes/vehicles');
 const bookingRoutes = require('./routes/bookings');
 const paymentRoutes = require('./routes/payments');
 
+<<<<<<< HEAD
+=======
+const path = require('path');
+
+>>>>>>> ca7a6386b00633955aab542622fac8e44117eb13
 // Initialize Express app
 const app = express();
 

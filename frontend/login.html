@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to AK Enterprises and manage your bookings, rides, and profile.">
+  <title>Login - AK ENTERPRISES</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <style>
+    :root {
+      --neon: #63f3ff;
+      --neon-soft: rgba(99, 243, 255, 0.2);
+      --panel-dark: rgba(2, 8, 20, 0.88);
+      --panel-deep: rgba(4, 14, 32, 0.96);
+      --panel-line: rgba(99, 243, 255, 0.5);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--text-light);
+      background:
+        radial-gradient(circle at 20% 25%, rgba(52, 211, 235, 0.18), transparent 22%),
+        radial-gradient(circle at 78% 35%, rgba(34, 163, 72, 0.14), transparent 24%),
+        linear-gradient(180deg, #02040a 0%, #030712 52%, #020409 100%);
+      overflow-x: hidden;
+    }
+
+    .login-page {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(0.8rem, 2vh, 2rem) 1rem;
+    }
+
+    .clerk-auth-panel {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.35rem;
+    }
+
+    .clerk-auth-panel:empty {
+      display: none;
+    }
+
+    .login-page::before,
+    .login-page::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .login-page::before {
+      background:
+        linear-gradient(rgba(99, 243, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 243, 255, 0.04) 1px, transparent 1px);
+      background-size: 70px 70px;
+      mask-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.9) 18%, rgba(0, 0, 0, 0.9) 82%, transparent);
+    }
+
+    .login-page::after {
+      background: radial-gradient(circle at center, transparent 55%, rgba(0, 0, 0, 0.45) 100%);
+    }
+
+    .scene-shell {
+      width: min(1280px, calc(100vw - 1rem));
+      position: relative;
+      z-index: 1;
+    }
+
+    .top-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: clamp(0.65rem, 1.6vh, 1.25rem);
+      padding: 0 0.25rem;
+    }
+
+    .brand-chip,
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-chip {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .brand-chip img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(99, 243, 255, 0.4);
+      box-shadow: 0 0 18px rgba(99, 243, 255, 0.24);
+    }
+
+    .back-link {
+      color: rgba(99, 243, 255, 0.82);
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      color: white;
+    }
+
+    .login-frame {
+      position: relative;
+      padding: 2px;
+      clip-path: polygon(4.5% 0, 100% 0, 95.5% 100%, 0 100%);
+      background: linear-gradient(135deg, rgba(99, 243, 255, 0.9), rgba(99, 243, 255, 0.24), rgba(99, 243, 255, 0.85));
+      box-shadow:
+        0 0 16px rgba(99, 243, 255, 0.45),
+        0 0 38px rgba(99, 243, 255, 0.18),
+        0 28px 60px rgba(0, 0, 0, 0.42);
+      animation: framePulse 3.8s ease-in-out infinite;
+    }
+
+    .login-frame::before {
+      content: '';
+      position: absolute;
+      inset: -14px;
+      clip-path: polygon(4.5% 0, 100% 0, 95.5% 100%, 0 100%);
+      border: 1px solid rgba(99, 243, 255, 0.12);
+      filter: blur(14px);
+    }
+
+    .login-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(4.5% 0, 100% 0, 95.5% 100%, 0 100%);
+      background: linear-gradient(110deg, transparent 22%, rgba(99, 243, 255, 0.22) 32%, transparent 42%);
+      transform: translateX(-120%);
+      animation: borderSweep 5.2s linear infinite;
+      pointer-events: none;
+    }
+
+    .login-stage {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      min-height: min(680px, calc(100vh - 90px));
+      clip-path: polygon(4.5% 0, 100% 0, 95.5% 100%, 0 100%);
+      background:
+        linear-gradient(115deg, rgba(8, 32, 46, 0.95) 0%, rgba(13, 72, 94, 0.92) 39%, rgba(7, 14, 28, 0.98) 39.3%, rgba(2, 8, 20, 0.98) 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .login-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(99, 243, 255, 0.14), transparent 32%),
+        linear-gradient(315deg, rgba(99, 243, 255, 0.06), transparent 30%);
+      pointer-events: none;
+    }
+
+    .login-stage::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent, rgba(99, 243, 255, 0.04), transparent);
+      background-size: 100% 9px;
+      opacity: 0.18;
+      mix-blend-mode: screen;
+      animation: scanlines 10s linear infinite;
+      pointer-events: none;
+    }
+
+    .hero-panel,
+    .form-panel {
+      position: relative;
+      z-index: 1;
+      padding: clamp(1.8rem, 3.4vh, 3.4rem);
+    }
+
+    .hero-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-left: clamp(3.2rem, 5vw, 5.2rem);
+      padding-right: clamp(2rem, 3.4vw, 3.2rem);
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      left: -120px;
+      top: 18%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 243, 255, 0.22), transparent 68%);
+      filter: blur(18px);
+      animation: orbDrift 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .hero-panel::after {
+      content: '';
+      position: absolute;
+      inset: 12% 24% 18% 0;
+      background: linear-gradient(125deg, rgba(255, 255, 255, 0.06), transparent 45%);
+      clip-path: polygon(0 0, 84% 0, 44% 100%, 0 100%);
+      opacity: 0.55;
+      animation: wedgeGlow 4.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 0.42rem 0.85rem;
+      margin-bottom: clamp(0.8rem, 1.5vh, 1.4rem);
+      border: 1px solid rgba(99, 243, 255, 0.28);
+      border-radius: 999px;
+      background: rgba(99, 243, 255, 0.08);
+      font-size: clamp(0.78rem, 1.2vw, 0.92rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.78);
+      animation: fadeRise 0.8s ease-out 0.2s both;
+    }
+
+    .hero-title {
+      font-family: 'Orbitron', sans-serif;
+      max-width: 5.2ch;
+      font-size: clamp(2.1rem, 4.25vw, 4.55rem);
+      line-height: 0.94;
+      letter-spacing: 0.03em;
+      margin: 0 0 clamp(0.5rem, 1.2vh, 1rem);
+      text-transform: uppercase;
+      text-shadow: 0 0 24px rgba(99, 243, 255, 0.18);
+      overflow: hidden;
+    }
+
+    .hero-title span {
+      display: block;
+      color: var(--neon);
+    }
+
+    .hero-title .title-line {
+      display: block;
+      transform: translateY(115%);
+      opacity: 0;
+      animation: textLift 0.9s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+    }
+
+    .hero-title .title-line:last-child {
+      animation-delay: 0.2s;
+    }
+
+    .hero-copy {
+      max-width: 330px;
+      margin: 0 0 clamp(0.9rem, 1.8vh, 1.8rem);
+      color: rgba(233, 247, 255, 0.76);
+      font-size: clamp(0.94rem, 1.4vw, 1.08rem);
+      line-height: 1.45;
+      animation: fadeRise 0.9s ease-out 0.45s both;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(0.7rem, 1.2vw, 1rem);
+      max-width: 350px;
+    }
+
+    .status-card {
+      padding: clamp(0.75rem, 1.5vh, 1rem) 1rem;
+      border: 1px solid rgba(99, 243, 255, 0.18);
+      background: rgba(3, 11, 23, 0.34);
+      backdrop-filter: blur(8px);
+      transform: translateY(24px);
+      opacity: 0;
+      animation: cardRise 0.8s ease-out forwards;
+    }
+
+    .status-card:nth-child(1) { animation-delay: 0.55s; }
+    .status-card:nth-child(2) { animation-delay: 0.68s; }
+    .status-card:nth-child(3) { animation-delay: 0.81s; }
+    .status-card:nth-child(4) { animation-delay: 0.94s; }
+
+    .status-card strong {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+      letter-spacing: 0.08em;
+    }
+
+    .status-card span {
+      color: rgba(255, 255, 255, 0.62);
+      font-size: clamp(0.82rem, 1vw, 0.92rem);
+    }
+
+    .hero-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: clamp(1rem, 2vh, 2rem);
+      animation: fadeRise 0.9s ease-out 1s both;
+    }
+
+    .hero-footer p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.55);
+      max-width: 290px;
+      font-size: clamp(0.78rem, 1vw, 0.92rem);
+    }
+
+    .hero-lines {
+      width: clamp(78px, 8vw, 110px);
+      height: clamp(50px, 6vh, 74px);
+      opacity: 0.62;
+      background:
+        linear-gradient(180deg, transparent, rgba(99, 243, 255, 0.22)),
+        repeating-linear-gradient(180deg, rgba(99, 243, 255, 0.7) 0 2px, transparent 2px 11px);
+      clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%);
+      animation: dataFlicker 3.2s ease-in-out infinite;
+    }
+
+    .form-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-left: clamp(2.8rem, 4vw, 4rem);
+      padding-right: clamp(3.2rem, 4.5vw, 5rem);
+    }
+
+    .form-shell {
+      max-width: 540px;
+      margin-left: auto;
+      width: 100%;
+      position: relative;
+      animation: formPanelIn 1s cubic-bezier(0.2, 0.9, 0.2, 1) 0.25s both;
+    }
+
+    .form-shell::before {
+      content: '';
+      position: absolute;
+      inset: -1rem -1.4rem;
+      border: 1px solid rgba(99, 243, 255, 0.08);
+      clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+      pointer-events: none;
+    }
+
+    .form-title {
+      margin: 0 0 0.4rem;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      animation: flickerIn 1.2s ease-out 0.55s both;
+    }
+
+    .form-subtitle {
+      margin-bottom: clamp(0.9rem, 1.8vh, 1.6rem);
+      color: rgba(255, 255, 255, 0.62);
+      font-size: clamp(0.88rem, 1vw, 0.98rem);
+      animation: fadeRise 0.85s ease-out 0.75s both;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.7rem, 1.2vh, 1rem);
+    }
+
+    .form-group {
+      margin-bottom: 0;
+      opacity: 0;
+      transform: translateX(28px);
+      animation: fieldSlideIn 0.75s ease-out forwards;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.9s; }
+    .form-group:nth-child(2) { animation-delay: 1.05s; }
+
+    .form-label {
+      margin-bottom: 0.35rem;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: clamp(0.72rem, 0.9vw, 0.8rem);
+      letter-spacing: 0.14em;
+    }
+
+    .input-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .input-wrap::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99, 243, 255, 0.9), transparent);
+      transform: translateX(-100%);
+      animation: inputScan 3.5s ease-in-out infinite;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.95rem;
+      pointer-events: none;
+    }
+
+    .form-input {
+      padding: 0.72rem 3rem 0.72rem 1.35rem;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.42);
+      border-radius: 0;
+      background: transparent;
+      color: white;
+      box-shadow: none;
+      font-size: 0.96rem;
+    }
+
+    .form-input:focus {
+      border-color: var(--neon);
+      box-shadow: 0 10px 22px rgba(99, 243, 255, 0.08);
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .field-trace {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(99, 243, 255, 0.78);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: traceBlink 1.8s steps(2, end) infinite;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: rgba(99, 243, 255, 0.78);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      padding: 0.2rem 0;
+    }
+
+    .password-toggle:hover {
+      color: white;
+    }
+
+    .form-error {
+      min-height: 1rem;
+      margin-top: 0.2rem;
+      color: #ff8c8c;
+      font-size: 0.78rem;
+    }
+
+    .form-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 0.1rem;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeRise 0.75s ease-out 1.15s both;
+    }
+
+    .remember-me {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.88rem;
+    }
+
+    .remember-me input {
+      accent-color: var(--neon);
+    }
+
+    .forgot-link {
+      color: rgba(99, 243, 255, 0.82);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .forgot-link:hover {
+      color: white;
+    }
+
+    .login-btn {
+      width: 100%;
+      margin-top: 0.4rem;
+      min-height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(99, 243, 255, 0.6);
+      background: linear-gradient(180deg, rgba(77, 232, 255, 0.6), rgba(7, 119, 136, 0.94));
+      color: #031019;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.88rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        0 0 22px rgba(99, 243, 255, 0.22);
+      overflow: hidden;
+      opacity: 0;
+      animation:
+        fadeRise 0.75s ease-out 1.3s both,
+        buttonGlow 2.6s ease-in-out 1.8s infinite;
+    }
+
+    .login-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 28%, rgba(255, 255, 255, 0.58) 50%, transparent 72%);
+      transform: translateX(-130%);
+      animation: buttonSweep 3.6s ease-in-out 1.6s infinite;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 0 28px rgba(99, 243, 255, 0.34);
+    }
+
+    .panel-note {
+      margin-top: 0.85rem;
+      color: rgba(255, 255, 255, 0.48);
+      font-size: 0.84rem;
+      text-align: center;
+      opacity: 0;
+      animation: fadeRise 0.85s ease-out 1.45s both;
+    }
+
+    .panel-note a {
+      color: rgba(99, 243, 255, 0.88);
+      font-weight: 700;
+    }
+
+    .panel-note a:hover {
+      color: white;
+    }
+
+    .auth-footer {
+      margin-top: 0.8rem;
+      text-align: center;
+      opacity: 0;
+      animation: fadeRise 0.85s ease-out 1.6s both;
+    }
+
+    .auth-footer p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.52);
+      font-size: 0.8rem;
+    }
+
+    @media (max-height: 820px) and (min-width: 961px) {
+      .scene-shell {
+        width: min(1180px, calc(100vw - 1rem));
+      }
+
+      .login-stage {
+        min-height: min(610px, calc(100vh - 80px));
+      }
+
+      .hero-panel,
+      .form-panel {
+        padding: 1.45rem 2rem;
+      }
+
+      .hero-panel {
+        padding-left: 3rem;
+        padding-right: 1.8rem;
+      }
+
+      .hero-title {
+        max-width: 5.4ch;
+        font-size: clamp(2rem, 3.6vw, 3.7rem);
+      }
+
+      .hero-copy {
+        max-width: 300px;
+        font-size: 0.92rem;
+      }
+
+      .status-grid {
+        max-width: 315px;
+        gap: 0.65rem;
+      }
+
+      .status-card {
+        padding: 0.7rem 0.8rem;
+      }
+
+      .hero-footer {
+        padding-top: 0.75rem;
+      }
+
+      .form-shell {
+        max-width: 480px;
+      }
+    }
+
+    .auth-footer a {
+      color: rgba(99, 243, 255, 0.9);
+      font-weight: 700;
+    }
+
+    @keyframes framePulse {
+      0%, 100% {
+        box-shadow:
+          0 0 16px rgba(99, 243, 255, 0.45),
+          0 0 38px rgba(99, 243, 255, 0.18),
+          0 28px 60px rgba(0, 0, 0, 0.42);
+      }
+      50% {
+        box-shadow:
+          0 0 22px rgba(99, 243, 255, 0.65),
+          0 0 56px rgba(99, 243, 255, 0.26),
+          0 30px 64px rgba(0, 0, 0, 0.46);
+      }
+    }
+
+    @keyframes borderSweep {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(135%); }
+    }
+
+    @keyframes scanlines {
+      0% { transform: translateY(-12px); }
+      100% { transform: translateY(12px); }
+    }
+
+    @keyframes orbDrift {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(30px, -18px, 0) scale(1.08); }
+    }
+
+    @keyframes wedgeGlow {
+      0%, 100% { opacity: 0.34; }
+      50% { opacity: 0.72; }
+    }
+
+    @keyframes textLift {
+      0% {
+        transform: translateY(115%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeRise {
+      0% {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes cardRise {
+      0% {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes dataFlicker {
+      0%, 100% { opacity: 0.5; }
+      25% { opacity: 0.75; }
+      26% { opacity: 0.4; }
+      27% { opacity: 0.72; }
+      62% { opacity: 0.58; }
+      63% { opacity: 0.8; }
+    }
+
+    @keyframes formPanelIn {
+      0% {
+        opacity: 0;
+        transform: translateX(42px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @keyframes flickerIn {
+      0%, 15%, 17%, 22%, 55% {
+        opacity: 0;
+        text-shadow: none;
+      }
+      16%, 21%, 24%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 16px rgba(99, 243, 255, 0.18);
+      }
+    }
+
+    @keyframes fieldSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(28px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes inputScan {
+      0%, 100% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; }
+      55% { transform: translateX(100%); opacity: 0.85; }
+      56% { opacity: 0; }
+    }
+
+    @keyframes traceBlink {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.95; }
+    }
+
+    @keyframes buttonGlow {
+      0%, 100% {
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.5),
+          0 0 22px rgba(99, 243, 255, 0.22);
+      }
+      50% {
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.62),
+          0 0 34px rgba(99, 243, 255, 0.38);
+      }
+    }
+
+    @keyframes buttonSweep {
+      0%, 100% { transform: translateX(-130%); }
+      45%, 55% { transform: translateX(130%); }
+    }
+
+    @media (max-width: 960px) {
+      .login-stage {
+        grid-template-columns: 1fr;
+        clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
+      }
+
+      .login-frame {
+        clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
+      }
+
+      .hero-panel,
+      .form-panel {
+        padding: 2rem;
+      }
+
+      .hero-panel {
+        padding-left: 2rem;
+        padding-bottom: 1rem;
+      }
+
+      .form-panel {
+        padding-top: 0.5rem;
+      }
+
+      .form-shell {
+        max-width: none;
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .login-page {
+        padding: 1rem 0.8rem;
+      }
+
+      .top-strip {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero-title {
+        max-width: none;
+        font-size: 2.55rem;
+      }
+
+      .status-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero-lines {
+        width: 84px;
+        height: 58px;
+      }
+
+      .hero-panel,
+      .form-panel {
+        padding: 1.35rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-page">
+    <div class="scene-shell">
+      <div class="top-strip">
+        <a href="index.html" class="brand-chip">
+          <img src="public/images/ak-logo.png" alt="AK Enterprises Logo">
+          <span>AK Enterprises</span>
+        </a>
+        <a href="index.html" class="back-link">Back to home</a>
+      </div>
+
+      <section class="login-frame animate-fadeIn">
+        <div class="login-stage">
+          <div class="hero-panel">
+            <div>
+              <div class="eyebrow">Premium access</div>
+              <h1 class="hero-title">
+                <span class="title-line">Welcome</span>
+                <span class="title-line">Back</span>
+              </h1>
+              <p class="hero-copy">
+                Apni bookings, payment status aur favorite rides ko ek sleek control panel se manage kijiye. Design video reference jaisa neon-tech feel rakha gaya hai.
+              </p>
+
+              <div class="status-grid">
+                <div class="status-card">
+                  <strong>24/7</strong>
+                  <span>Booking support</span>
+                </div>
+                <div class="status-card">
+                  <strong>Fast</strong>
+                  <span>Dashboard access</span>
+                </div>
+                <div class="status-card">
+                  <strong>Secure</strong>
+                  <span>Protected login</span>
+                </div>
+                <div class="status-card">
+                  <strong>AK</strong>
+                  <span>Brand styling</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-footer">
+              <p>Vehicle on Rent ke liye dark futuristic login experience, responsive layout ke saath.</p>
+              <div class="hero-lines" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <div class="form-panel">
+            <div class="form-shell">
+              <h2 class="form-title">Login</h2>
+              <p class="form-subtitle">Use your AK Enterprises account credentials.</p>
+
+              <div id="app" class="clerk-auth-panel"></div>
+
+              <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                  <label class="form-label" for="email">Email</label>
+                  <div class="input-wrap">
+                    <span class="input-icon">@</span>
+                    <input
+                      type="email"
+                      id="email"
+                      class="form-input"
+                      placeholder="your.email@example.com"
+                      required
+                    >
+                    <span class="field-trace">ID</span>
+                  </div>
+                  <span class="form-error" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="password">Password</label>
+                  <div class="input-wrap">
+                    <span class="input-icon">#</span>
+                    <input
+                      type="password"
+                      id="password"
+                      class="form-input"
+                      placeholder="Enter your password"
+                      required
+                    >
+                    <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">Show</button>
+                  </div>
+                  <span class="form-error" id="passwordError"></span>
+                </div>
+
+                <div class="form-meta">
+                  <label class="remember-me" for="rememberMe">
+                    <input type="checkbox" id="rememberMe">
+                    <span>Remember me</span>
+                  </label>
+
+                  <a href="#" class="forgot-link" id="forgotPasswordLink">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn login-btn">
+                  Sign In
+                </button>
+              </form>
+
+              <div class="panel-note">
+                New here? <a href="register.html">Create account</a>
+              </div>
+
+              <div class="auth-footer">
+                <p>Ride history, bookings and profile controls in one place.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    if (localStorage.getItem('token')) {
+      window.location.href = 'dashboard.html';
+    }
+
+    document.getElementById('forgotPasswordLink')?.addEventListener('click', (event) => {
+      event.preventDefault();
+      showToast('Password recovery feature coming soon.', 'warning');
+    });
+
+    document.getElementById('passwordToggle')?.addEventListener('click', () => {
+      const passwordInput = document.getElementById('password');
+      const toggleButton = document.getElementById('passwordToggle');
+      const isPassword = passwordInput.type === 'password';
+
+      passwordInput.type = isPassword ? 'text' : 'password';
+      toggleButton.textContent = isPassword ? 'Hide' : 'Show';
+      toggleButton.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      document.getElementById('emailError').textContent = '';
+      document.getElementById('passwordError').textContent = '';
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      let hasError = false;
+
+      if (!validateEmail(email)) {
+        document.getElementById('emailError').textContent = 'Please enter a valid email address';
+        hasError = true;
+      }
+
+      if (!password) {
+        document.getElementById('passwordError').textContent = 'Password is required';
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      setLoading(submitBtn, true);
+
+      try {
+        const data = await API.login({ email, password });
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        showToast('Login successful! Redirecting...', 'success');
+
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1000);
+      } catch (error) {
+        showToast(error.message || 'Login failed. Please check your credentials.', 'error');
+        setLoading(submitBtn, false);
+      }
+    });
+  </script>
+</body>
+</html>
