@@ -1,0 +1,90 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const path = require('path');
+
+// Load environment variables
+dotenv.config({ path: path.join(__dirname, '.env') });
+
+// Import routes
+const authRoutes = require('./routes/auth');
+const vehicleRoutes = require('./routes/vehicles');
+const bookingRoutes = require('./routes/bookings');
+const paymentRoutes = require('./routes/payments');
+
+// Initialize Express app
+const app = express();
+
+// Middleware
+app.use(cors({
+  origin: function (origin, callback) {
+    callback(null, true);
+  },
+  credentials: true
+}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from frontend/public (images, etc.)
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
+
+// Serve frontend HTML/CSS/JS files
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
+
+// Routes
+const apiRouter = express.Router();
+
+apiRouter.use('/auth', authRoutes);
+apiRouter.use('/vehicles', vehicleRoutes);
+apiRouter.use('/bookings', bookingRoutes);
+apiRouter.use('/payments', paymentRoutes);
+
+// Health check endpoint
+apiRouter.get('/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Vehicle Rental API is running' });
+});
+
+// Mount the router
+// 1. At /api for local development and standard deployment
+app.use('/api', apiRouter);
+
+// 2. At / for Vercel Services (where the /api prefix is stripped by the router)
+app.use('/', apiRouter);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
+});
+
+// Connect to MongoDB
+const PORT = process.env.PORT || 5000;
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/vehicle-rental';
+
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log('✓ Connected to MongoDB'))
+  .catch((err) => console.error('✗ MongoDB connection error:', err));
+
+// Start server locally only if not in serverless environment
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`✓ Server is running on port ${PORT}`);
+    console.log(`✓ API available at http://localhost:${PORT}/api`);
+  });
+}
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled Promise Rejection:', err);
+  if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    process.exit(1);
+  }
+});
+
+// Export the Express API for Serverless platforms like Vercel
+module.exports = app;
